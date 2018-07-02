@@ -2,7 +2,6 @@
 
 import faker from 'faker';
 import Account from '../../model/account';
-import { access } from 'fs';
 
 const pCreateAccountMock = () => {
   const mockData = {};
@@ -29,3 +28,5 @@ const pCreateAccountMock = () => {
 };
 
 const pRemoveAccountMock = () => Account.remove({});
+
+export { pCreateAccountMock, pRemoveAccountMock };
