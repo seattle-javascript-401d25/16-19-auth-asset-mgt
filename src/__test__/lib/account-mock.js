@@ -1,0 +1,32 @@
+'use strict';
+
+import faker from 'faker';
+import Account from '../../model/account';
+
+const pCreateAccountMock = () => {
+  const mockData = {};
+  const originalReq = {
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.lorem.word(8),
+  };
+
+  return Account.create(originalReq.username, originalReq.email, originalReq.password)
+    .then((account) => {
+      mockData.originalReq = originalReq;
+      mockData.account = account;
+      return account.pCreateToken();
+    })
+    .then((token) => {
+      mockData.token = token;
+      return Account.findById(mockData.account._id);
+    })
+    .then((account) => {
+      mockData.account = account;
+      return mockData;
+    });
+};
+
+const pRemoveAccountMock = () => Account.remove({});
+
+export { pCreateAccountMock, pRemoveAccountMock };
