@@ -1,6 +1,8 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) Lab 16: Basic Authentication
 ======
 
+[![Build Status](https://travis-ci.com/TCW417/16-19-auth-asset-mgt.svg?branch=master)](https://travis-ci.com/TCW417/16-19-auth-asset-mgt)
+
 ## Submission Instructions
 * Work in a fork of this repository
 * Work in a branch on your fork called `lab-<current lab number>`

@@ -31,7 +31,6 @@ const accountSchema = mongoose.Schema({
   tokenSeed: {
     type: String,
     required: true,
-    unique: true,
   },
 }, { timestamps: true });
 
@@ -87,9 +86,6 @@ Account.create = (username, email, password) => {
         passwordHash,
         tokenSeed,
       }).save();
-    })
-    .catch((err) => {
-      throw new HttpErrors(500, `ERROR WITH HASHING or ERR WITH SAVING ACCOUNT: ${JSON.stringify(err)}`);
     });
 };
 

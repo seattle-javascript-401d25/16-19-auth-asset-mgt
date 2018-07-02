@@ -10,7 +10,7 @@ const apiUrl = `http://localhost:${process.env.PORT}/api`;
 describe('AUTH router', () => {
   beforeAll(startServer);
   afterAll(stopServer);
-  afterEach(removeAccountMockPromise);
+  beforeEach(removeAccountMockPromise);
 
   test('POST 200 to /api/signup for successful account creation and receipt of a TOKEN', () => {
     const mockAccount = {
@@ -29,6 +29,42 @@ describe('AUTH router', () => {
       });
   });
 
+  test('POST 409 to api/login conflicting user info', () => {
+    let conflict;
+    return createAccountMockPromise()
+      .then((mockData) => {
+        conflict = mockData.originalRequest;
+        return superagent.post(`${apiUrl}/signup`)
+          .send(conflict); // this is how we send authorization headers via REST/HTTP
+      })
+      .then((response) => {
+        // When I login, I get a 200 status code and a TOKEN
+        expect(response.status).toEqual(409);
+        expect(response.body.token).toBeTruthy();
+        // expect(response.body.token).toEqual(token);
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(409);
+      });
+  });
+
+  test('POST 400 to api/login missing user info', () => {
+    const mockAccount = {
+      username: faker.internet.userName(),
+      // email: faker.internet.email(),
+      password: 'thisIsATerriblePassword1234',
+    };
+    return superagent.post(`${apiUrl}/signup`)
+      .send(mockAccount)
+      .then((response) => {
+        throw response;
+        // expect(response.status).toEqual(200);
+        // expect(response.body.token).toBeTruthy();
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(400);
+      });
+  });
 
   test('GET 200 to api/login for successful login and receipt of a TOKEN', () => {
     // in order to login, we need to create a mock account first

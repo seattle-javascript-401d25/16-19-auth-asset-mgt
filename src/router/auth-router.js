@@ -7,7 +7,10 @@ import logger from '../lib/logger';
 const authRouter = new Router();
 
 authRouter.post('/api/signup', (request, response, next) => {
-  return Account.create(request.body.username, request.body.email, request.body.password)
+  Account.init()
+    .then(() => {
+      return Account.create(request.body.username, request.body.email, request.body.password);
+    })
     .then((account) => {
       // we want to get rid of the password as early as possible
       delete request.body.password;
@@ -24,12 +27,16 @@ authRouter.post('/api/signup', (request, response, next) => {
 
 authRouter.get('/api/login', basicAuthMiddleware, (request, response, next) => {
   if (!request.account) return next(new HttpErrors(400, 'AUTH-ROUTER: invalid request'));
-  return request.account.createTokenPromise()
+  Account.init()
+    .then(() => {
+      return request.account.createTokenPromise();
+    })
     .then((token) => {
       logger.log(logger.INFO, `AUTH-ROUTER /api/login - responding with a 200 status code and a token ${token}`);
       return response.json({ token });
     })
     .catch(next);
+  return undefined;
 });
 
 export default authRouter;

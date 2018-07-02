@@ -14,5 +14,3 @@ const logger = module.exports = winston.createLogger({
 logger.INFO = 'info';
 logger.ERROR = 'error';
 
-
-
