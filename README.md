@@ -11,7 +11,7 @@
   * a question and observation
   * your original estimate
   * how long you spent, 
-  * a link to your pull request
+  * a link to your pull request (**You will get a 0 if you have a failing PR or haven't hooked up Travis CI**)
   * a link to your deployed Heroku URL (**You will get a 0 if you don't submit this**)
 
 ## Resources
