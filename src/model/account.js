@@ -32,6 +32,16 @@ const accountSchema = mongoose.Schema({
 }, { timestamps: true });
 
 accountSchema.methods.pVerifyPassword = function pVerifyPassword(password) {
+  return bcrypt.compare(password, this.passwordHash)
+    .then((updatedAccount) => {
+      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+    })
+    .catch((err) => {
+      throw new HttpErrors(500, `ERROR SAVING ACC or ERROR WITH JWT: ${JSON.stringify(err)}`);
+    });
+};
+
+accountSchema.methods.pCreateToken = function pCreateToken() {
   this.tokenSeed = crypto.randomBytes(TOKEN_SEED_LENGTH).toString('hex');
   return this.save()
     .then((updatedAccount) => {
@@ -48,7 +58,7 @@ const Account = mongoose.model('accounts', accountSchema, 'accounts', skipInit);
 Account.create = (username, email, password) => {
   return bcrypt.hash(password, HASH_ROUNDS)
     .then((passwordHash) => {
-      password = null;
+      password = null; /*eslint-disable-line*/
       const tokenSeed = crypto.randomBytes(TOKEN_SEED_LENGTH).toString('hex');
       return new Account({
         username,
