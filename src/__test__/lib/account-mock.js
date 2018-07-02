@@ -6,7 +6,7 @@ import Account from '../../model/account';
 const pCreateAccountMock = () => {
   const mockData = {};
   const originalReq = {
-    username: faker.internet.username(),
+    username: faker.internet.userName(),
     email: faker.internet.email(),
     password: faker.lorem.word(8),
   };

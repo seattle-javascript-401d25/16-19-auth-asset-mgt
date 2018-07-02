@@ -33,11 +33,14 @@ const accountSchema = mongoose.Schema({
 
 accountSchema.methods.pVerifyPassword = function pVerifyPassword(password) {
   return bcrypt.compare(password, this.passwordHash)
-    .then((updatedAccount) => {
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+    .then((result) => {
+      if (!result) {
+        throw new HttpErrors(401, 'ACC MODEL: INCORRECT DATA');
+      }
+      return this;
     })
     .catch((err) => {
-      throw new HttpErrors(500, `ERROR SAVING ACC or ERROR WITH JWT: ${JSON.stringify(err)}`);
+      throw new HttpErrors(500, `ERROR CREATING TOKEN: ${JSON.stringify(err)}`);
     });
 };
 

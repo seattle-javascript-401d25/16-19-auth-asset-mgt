@@ -18,7 +18,7 @@ describe('AUTH Router', () => {
     const mockAccount = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
-      password: 'a#$%SFbf9fxnkjS#@45',
+      password: '1234',
     };
     return superagent.post(`${apiUrl}/signup`)
       .send(mockAccount)
