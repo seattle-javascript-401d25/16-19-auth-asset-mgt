@@ -55,7 +55,7 @@ Create a user `Account` model that keeps track of a username, email, hashed pass
 
 ## Stretch Goal
 * Create a **very rudimentary** front end using jQuery/vanilla Javascript to make a request to your API to authenticate yourself as a user. You can start by making a signup form that has username/password/email input fields. Upon form submission, send those fields to your server via a front end AJAX request, and send a response back to display to your front end that confirms you successfully signed up. 
-* **This is a heavy stretch goal and should be prioritized last. The instructional team will not assist you with this goal. 
+* **This is a heavy stretch goal and should be prioritized last. The instructional team will not assist you with this goal**. 
 
 ## Documentation
 Add your Travis badge to the top of your README. List all of your registered routes and describe their behavior. Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it. Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.
