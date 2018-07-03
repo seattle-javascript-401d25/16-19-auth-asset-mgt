@@ -38,7 +38,7 @@ Create a model with at least four properties that belongs to an account. The mod
 * Write 200, 400, and 401 **OR** 404 tests for `/login` (Auth router)
 * Write 200, 400, and 401 **OR** 404 tests for `POST /<resource-name>`
 * Write 200 and 401 **OR** 404 tests for `GET /<resource-name>/:id`
-* **This will involve changing the 400 error codes I already gave you to a 401. Think about the most appropriate place in the code that should be 401 error codes instead, and change it there.**
+* **This will involve changing the 400 error codes I already gave you to a 401 or 404. Think about the most appropriate place in the code that should be changed to a more appropriate error code instead, and change it there.**
 
 ## Documentation
 Same as previous lab, with addition of new `login` routes. 
