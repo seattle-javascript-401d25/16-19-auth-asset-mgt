@@ -47,6 +47,7 @@ Same as previous lab, with addition of new `login` routes.
 * Refactor your Lab 16 tests using `async/await`
 * Refactor all of your mocks using `async/await`
 * Test your  `GET /<resource-name>/:id` route to ensure it returns an array of available profiles in your database 
-* In order to achieve the above goal, you'll need to create multiple users in your database for testing purposes. HINT: Promise.all will help you out here. 
+* In order to achieve the above goal, you'll need to create multiple users in your database for testing purposes. HINT: [`Promise.all`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) will help you out here. 
+
 * Create an extra model that would be the `many` in a `one-to-many` relationship with your `Profile` model, and test for full-CRUD on that model. 
 * Read about and try to utilize [ES6 generators](https://medium.com/front-end-hacking/modern-javascript-and-asynchronous-programming-generators-yield-vs-async-await-550275cbe433) to handle async code in your tests. 
