@@ -4,11 +4,11 @@
 ## Submission Instructions
 * Continue from Lab 16 in a new branch called `lab-17`
 * Submit on canvas:
- * your original time estimate
- * how long you spent
- * link to your pull request
- * link to your deployed Heroku URL that registers with your updated changes (it can be the same as what you submitted for Lab 8)
- * **A 0 will be given for failing PRs, no Travis CI hookup, or no Heroku URL**
+  * your original time estimate
+  * how long you spent
+  * link to your pull request
+  * link to your deployed Heroku URL that registers with your updated changes (it can be the same as what you submitted for Lab 8)
+  * **A 0 will be given for failing PRs, no Travis CI hookup, or no Heroku URL**
 
 ## Feature Tasks  
 
@@ -45,6 +45,7 @@ Same as previous lab, with addition of new `login` routes.
 
 ## Stretch Goal
 * Refactor your Lab 16 tests using `async/await`
+* Refactor all of your mocks using `async/await`
 * Test your  `GET /<resource-name>/:id` route to ensure it returns an array of available profiles in your database 
 * In order to achieve the above goal, you'll need to create multiple users in your database for testing purposes. HINT: Promise.all will help you out here. 
 * Create an extra model that would be the `many` in a `one-to-many` relationship with your `Profile` model, and test for full-CRUD on that model. 
