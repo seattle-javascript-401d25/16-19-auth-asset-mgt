@@ -5,7 +5,7 @@ export default (request, response, next) => {
   if (!request.headers.authorization) return next(new HttpErrors(400, 'AUTH MIDDLEWARE - invalid request'));
 
   // if i make it past the if statement, I know I have the right headers
-  const base64AuthHeader = request.headers.authorization.split('Basic')[1];
+  const base64AuthHeader = request.headers.authorization.split(' ')[1];
   if (!base64AuthHeader) return next(new HttpErrors(400, 'AUTH MIDDLEWARE - invalid request'));
   
   // base64AuthHeader is base64 encoded, so we use Node's Buffer class to make a new buffer out of it, inform the Buffer class it should expect a base64-encoded string (hence passing in the 'base64' arg), then we toString() it to convert it utf-8 to human readable form
