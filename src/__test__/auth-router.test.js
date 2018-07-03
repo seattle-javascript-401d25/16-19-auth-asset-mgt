@@ -96,4 +96,37 @@ describe('AUTH router', () => {
         expect(err.status).toEqual(400);
       });
   });
+
+  test('GET 400 to api/login for good username, bad password', () => {
+    // in order to login, we need to create a mock account first
+    // let token;
+    return createAccountMockPromise()
+      .then((mockData) => {
+        // token = mockData.token; 
+        return superagent.get(`${apiUrl}/login`)
+          .auth(mockData.account.username, 'nottheirpassword'); 
+      })
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(400);
+      });
+  });
+
+  test('GET 400 to api/login for bad username, good password', () => {
+    // in order to login, we need to create a mock account first
+    // let token;
+    return createAccountMockPromise()
+      .then((mockData) => {
+        return superagent.get(`${apiUrl}/login`)
+          .auth('nottherightusername', mockData.account.password); 
+      })
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(400);
+      });
+  });
 });

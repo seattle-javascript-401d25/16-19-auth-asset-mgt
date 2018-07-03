@@ -18,14 +18,20 @@ export default (request, response, next) => {
 
   // if we reached this point, we know that the user sent us a username and password
   // this is the same as return Account.findOne({ username: username})
+  let account;
   return Account.findOne({ username })
-    .then((account) => {
-      if (!account) return next(new HttpErrors(400, 'BASIC AUTH - invalid request'));
+    .then((result) => {
+      if (!result) return next(new HttpErrors(400, 'BASIC AUTH - invalid request'));
+      account = result;
       return account.verifyPasswordPromise(password);
     })
-    .then((account) => {
-      request.account = account;
-      return next(); // we are now calling next function in the middleware chain
+    .then((verified) => {
+      if (verified) {
+        request.account = account;
+        return next();
+      }
+      // else
+      return next(new HttpErrors(400, 'BASIC AUTH - unable to validate user'));
     })
     .catch(next);
 };

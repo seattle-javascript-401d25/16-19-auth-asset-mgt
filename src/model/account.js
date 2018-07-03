@@ -40,11 +40,11 @@ accountSchema.methods.verifyPasswordPromise = function verifyPasswordPromise(pas
   return bcrypt.compare(password, this.passwordHash)
     .then((result) => {
       // result is just a boolean letting us know if the plain text password recvd equals the hashed password
-      if (!result) {
-        // 401 is the error code for unauthorized access
-        throw new HttpErrors(401, 'ACCOUNT MODEL: incorrect data');
-      }
-      return this;
+      // if (!result) {
+      //   // 401 is the error code for unauthorized access
+      //   throw new HttpErrors(401, 'ACCOUNT MODEL: incorrect data');
+      // }
+      return result;
     })
     .catch((err) => {
       throw new HttpErrors(500, `ERROR CREATING TOKEN: ${JSON.stringify(err)}`);
