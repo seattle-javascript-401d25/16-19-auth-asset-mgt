@@ -48,7 +48,7 @@ accountSchema.methods.pCreateToken = function pCreateToken() {
   this.tokenSeed = crypto.randomBytes(TOKEN_SEED_LENGTH).toString('hex');
   return this.save()
     .then((updatedAccount) => {
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET_KEY);
     })
     .catch((err) => {
       throw new HttpErrors(500, `ERROR SAVING ACC or ERROR WITH JWT: ${JSON.stringify(err)}`);
