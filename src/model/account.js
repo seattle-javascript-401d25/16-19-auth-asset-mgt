@@ -8,8 +8,8 @@ import jsonWebToken from 'jsonwebtoken';
 import HttpErrors from 'http-errors';
 
 // a common styling convention is captialize constant strings and numbers
-const HASH_ROUNDS = 8;
-const TOKEN_SEED_LENGTH = 128;
+const HASH_ROUNDS = 4;
+const TOKEN_SEED_LENGTH = 24;
 
 // this schema should never be sent over the server in an API call. This data should only ever stay in the database
 
@@ -31,6 +31,7 @@ const accountSchema = mongoose.Schema({
   tokenSeed: {
     type: String,
     required: true,
+    unique: true,
   },
 }, { timestamps: true });
 
@@ -59,7 +60,7 @@ accountSchema.methods.createTokenPromise = function createTokenPromise() {
       // at this point, we have a token seed generated
       // "sign" means "to encrypt"
       // this jsonWebToken.sign returns a promise that resolves with a token. When it resolves, I now have a token
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET);
+      return jsonWebToken.sign({ accountId: updatedAccount._id, tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET);
     })
     .catch((err) => {
       // you have to make a design choice how explicit you want to be with your error messages when handling errors for signup/login

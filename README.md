@@ -24,7 +24,7 @@ ETag: W/"1df-QcYUBHTXhq3c2S6xNl8ELjEnYkY"
 X-Powered-By: Express
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiJjZGUzODhhZTgxYzU3NjlmMDhiNmY5MGE2YmZmYWNiMzY5ZWUxYTQ5YTUxZDZjZGE5NjM3YTA4ZTY1YzZhMTkyNTcyZTljYWQ4YjZjOTNiOWU1NzEzYjkyNjhhOTU1NjFhNzIzZDQyZGZiMzY4ZWEzNDg2Zjk0ZWRhNjlhZmM2NzhmOGE0Y2NhNGIxMGQyMTA2ZDA5MWNhZjQ5ZTk3YjRhNmRiM2IxMGM4Zjk5ZjE3MmM3NWU5MjdiNzNjNmNhNmEzZGQ5ZTQ3ZWJjYjdjYTdiZWQzNjBiN2RhOGNiZmFiY2ZiZTk0YzI4NjUzNzkyYzk4NzI3YmNhNmFkMDBjOGQzIiwiaWF0IjoxNTMwNTc1NTAzfQ.2d4-xoH1uMJqJ1gKon4CjhzqWeNtynVWsT4NRONZM34"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiI3ODRlMmViOTFmMDYwNzM3OGM4OTY3YzM1YmU0NDEyYjhiN2NmMzUwOWEyZjJlN2QiLCJpYXQiOjE1MzA2NTYzOTh9.Eq0g-0LulEn5G5JrQ5XRMsREklYV5KuVhEcuq6PREYY"
 }
 ```
 
@@ -38,11 +38,69 @@ This route requires the username and password to be base64 encrypted and include
 http -a Larry:McMurtry localhost:3000/api/login
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiJhNmQzY2ZlMzA2OTczZmUyNzQ5OTg2ZDFkODBiMTMyYzhhY2VhY2IwMGM1MTVlYTExNWVkNGQ3YzNhMDYxMDQzYzI1ZGRlNjcxNTE1MGQ0MzIzYTRhZmMwYzg1OTQwZjA4N2ViNzE1MjMxN2FjODliYzY2Zjg3NjI2YzdiZDZlY2JhYjE3ODZmNGNkZDAzZGM3NmZmZjA5MjExMjYwM2MxMzY5MmU5YTI0NGQ2ZGI3NzBlZDM4OTQzOTA4ZjJiMGQ0MTBjMDg2MWMzMzdlMzFmYzM3OTEyYzNlMDY1MmYxNDUwMGZmYWJmODQwOThiODk0OWNkNzE5MzFjMzBkOTZiIiwiaWF0IjoxNTMwNTc1OTUwfQ.sY9IlAs0QbkiNPd9Aiisstk2GctDAPsSxRhRuQ4v7oA"
+    "id": "5b3bf68e06fde67494fa7ab0",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiIyMGNiZmExODFmZmZhYTk4ZGRkMDEzNDExMTM4NDI2YmUwZGU2NTY0NTBhYTA3ZWIiLCJpYXQiOjE1MzA2NTY2MzZ9.0XAT9ltDxe34pxpVZwKLb17b7n6ZpKj_N04wVwviTLg"
 }
 ```
 
 Returns 400 if username not found, 500 if password is incorrect (as a benefit to hackers everywhere).
+
+#### POST /api/profiles
+
+Create a profile for an existing Account.  Requires a firstName and Account ID (provided by the GET /api/login route). Other properties are lastName, location, profileImageUrl, and bio.  Returns status code 200 on success.
+```
+request body = {
+    firstName: 'Larry',
+    lastName: 'McMurtry',
+    location: 'Souix Falls, SD',
+    bio: 'A great american author.',
+    accountId: '5b3bf68e06fde67494fa7ab0'
+}
+```
+Returns
+```
+{
+    "_id": "5b3bf93461e2a6754b1c8cf3",
+    "firstName": "Larry",
+    "lastName": "McMurtry",
+    "location": "Souix Falls, SD",
+    "bio": "A great american author.",
+    "accountId": "5b3bf68e06fde67494fa7ab0",
+    "__v": 0
+}
+```
+Returns 404 if accountId does not exist, 400 if badly formed request.
+
+#### GET /api/profiles[?id=accountId]
+
+With no query string, returns an array of all profiles:
+```
+[
+    {
+        "_id": "5b3bf93461e2a6754b1c8cf3",
+        "firstName": "Larry",
+        "lastName": "McMurtry",
+        "location": "Souix Falls, SD",
+        "bio": "A great american author.",
+        "accountId": "5b3bf68e06fde67494fa7ab0",
+        "__v": 0
+    }
+]
+```
+With an id query (id is the profile _id property, not the accountId property), returns the specific profile:
+```
+{
+    "_id": "5b3bf93461e2a6754b1c8cf3",
+    "firstName": "Larry",
+    "lastName": "McMurtry",
+    "location": "Souix Falls, SD",
+    "bio": "A great american author.",
+    "accountId": "5b3bf68e06fde67494fa7ab0",
+    "__v": 0
+}
+```
+Returns 404 if profile isn't found, 400 if query is badly formed.
+
 
 
 

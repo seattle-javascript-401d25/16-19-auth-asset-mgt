@@ -39,6 +39,7 @@
     "jest": "^23.1.0",
     "nodemon": "^1.17.5",
     "superagent": "^3.8.3",
+    "superagent-auth-bearer": "0.0.1",
     "winston": "^3.0.0"
   },
   "dependencies": {

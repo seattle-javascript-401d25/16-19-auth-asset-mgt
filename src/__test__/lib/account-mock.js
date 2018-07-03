@@ -16,7 +16,7 @@ const createAccountMockPromise = () => {
       return account.createTokenPromise(); // this line changes the token seed
     })
     .then((token) => {
-      mockData.token = token;
+      mockData.token = token; // this is the signed JSON Web Token with tokenSeed as payload.
       // if I make it here, I know the account info has changed and was resaved to the db due to the previous account.createTokenPromise that got invoked above. So now we must retrieve the account again to get the most updated information from it
       return Account.findById(mockData.account._id);
     })

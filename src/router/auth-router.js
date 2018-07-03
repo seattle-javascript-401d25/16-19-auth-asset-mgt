@@ -33,7 +33,7 @@ authRouter.get('/api/login', basicAuthMiddleware, (request, response, next) => {
     })
     .then((token) => {
       logger.log(logger.INFO, `AUTH-ROUTER /api/login - responding with a 200 status code and a token ${token}`);
-      return response.json({ token });
+      return response.json({ id: request.account._id, token });
     })
     .catch(next);
   return undefined;
