@@ -99,7 +99,7 @@ With an id query (id is the profile _id property, not the accountId property), r
     "__v": 0
 }
 ```
-Returns 404 if profile isn't found, 400 if query is badly formed.
+Returns 404 if profile isn't found, 401 on bad token, 400 if query is badly formed.
 
 
 
