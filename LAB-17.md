@@ -41,7 +41,7 @@ Create a model with at least four properties that belongs to an account. The mod
 * **This will involve changing the 400 error codes I already gave you to a 401 or 404. Think about the most appropriate place in the code that should be changed to a more appropriate error code instead, and change it there.**
 
 ## Documentation
-Same as previous lab, with addition of new `login` routes. 
+Same as previous lab, with addition of new routes for this lab. 
 
 ## Stretch Goal
 * Refactor your Lab 16 tests using `async/await`
