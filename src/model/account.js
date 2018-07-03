@@ -8,8 +8,8 @@ import crypto from 'crypto';
 import jsonWebToken from 'jsonwebtoken';
 import HttpErrors from 'http-errors';
 
-const HASH_ROUNDS = 8;
-const TOKEN_SEED_LENGTH = 128;
+const HASH_ROUNDS = 1;
+const TOKEN_SEED_LENGTH = 50;
 
 const accountSchema = mongoose.Schema({
   passwordHash: {
