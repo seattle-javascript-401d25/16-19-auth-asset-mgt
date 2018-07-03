@@ -51,3 +51,4 @@ Same as previous lab, with addition of new `login` routes.
 
 * Create an extra model that would be the `many` in a `one-to-many` relationship with your `Profile` model, and test for full-CRUD on that model. 
 * Read about and try to utilize [ES6 generators](https://medium.com/front-end-hacking/modern-javascript-and-asynchronous-programming-generators-yield-vs-async-await-550275cbe433) to handle async code in your tests. 
+* Sign up for a free [swagger.io](https://app.swaggerhub.com) account and try to utilize this free app to make an awesome interactive README for your API. 
