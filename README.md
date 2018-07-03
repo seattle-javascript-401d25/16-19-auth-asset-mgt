@@ -3,63 +3,46 @@
 
 [![Build Status](https://travis-ci.com/TCW417/16-19-auth-asset-mgt.svg?branch=master)](https://travis-ci.com/TCW417/16-19-auth-asset-mgt)
 
-## Submission Instructions
-* Work in a fork of this repository
-* Work in a branch on your fork called `lab-<current lab number>`
-* Set up Travis on your forked repo
-* **Deploy to Heroku**
-* Open a pull request to this repository
-* Submit on canvas 
-  * a question and observation
-  * your original estimate
-  * how long you spent, 
-  * a link to your pull request (**You will get a 0 if you have a failing PR or haven't hooked up Travis CI**)
-  * a link to your deployed Heroku URL (**You will get a 0 if you don't submit this**)
+This lab implements a basic authentication API.
 
-## Resources
-* [express docs](http://expressjs.com/en/4x/api.html)
-* [mongoose guide](http://mongoosejs.com/docs/guide.html)
-* [mongoose api docs](http://mongoosejs.com/docs/api.html)
+### Routes
 
-### Configuration
-Configure the root of your repository with the following files and directories. Thoughtfully name and organize any additional configuration or module files.
-* **README.md** - contains documentation
-* **.env** - contains env variables **(should be git ignored)**
-* **.gitignore** - contains a [robust](http://gitignore.io) `.gitignore` file
-* **.eslintrc.json** - contains the course linter configuration
-* **.eslintignore** - contains the course linter ignore configuration
-* **package.json** - contains npm package config
-  * create a `test` script for running tests
-  * create `dbon` and `dboff` scripts for managing the mongo daemon
-* **db/** - contains mongodb files **(should be git ignored)**
-* **index.js** - entry-point of the application
-* **src/** - contains the remaining code
-  * **src/lib/** - contains module definitions
-  * **src/model/** - contains module definitions
-  * **src/route/** - contains module definitions
-  * **src/\_\_test\_\_/** - contains test modules
-  * **main.js** - starts the server
+#### POST /api/signup
 
-## Feature Tasks  
-For this assignment you will be building a RESTful HTTP server with basic authentication using express.
+This route creates a new user account.  The body of the request must include a username, password and email.
 
-#### Account
-Create a user `Account` model that keeps track of a username, email, hashed password, and token seed. The model should be able to regenerate tokens using json web token. 
+```
+http POST localhost:3000/api/signup username=Larry password=McMurtry email='lonesome@dove.com'
 
-#### Server Endpoints
-* `POST /signup` 
-  * pass data as stringifed JSON in the body of a **POST** request to create a new account
-  * on success respond with a 200 status code and an authentication token
-  * on failure due to a bad request send a 400 status code
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Connection: keep-alive
+Content-Length: 479
+Content-Type: application/json; charset=utf-8
+Date: Mon, 02 Jul 2018 23:51:43 GMT
+ETag: W/"1df-QcYUBHTXhq3c2S6xNl8ELjEnYkY"
+X-Powered-By: Express
 
-## Tests
-* POST should test for 200, 400, and 409 (if any keys are unique)
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiJjZGUzODhhZTgxYzU3NjlmMDhiNmY5MGE2YmZmYWNiMzY5ZWUxYTQ5YTUxZDZjZGE5NjM3YTA4ZTY1YzZhMTkyNTcyZTljYWQ4YjZjOTNiOWU1NzEzYjkyNjhhOTU1NjFhNzIzZDQyZGZiMzY4ZWEzNDg2Zjk0ZWRhNjlhZmM2NzhmOGE0Y2NhNGIxMGQyMTA2ZDA5MWNhZjQ5ZTk3YjRhNmRiM2IxMGM4Zjk5ZjE3MmM3NWU5MjdiNzNjNmNhNmEzZGQ5ZTQ3ZWJjYjdjYTdiZWQzNjBiN2RhOGNiZmFiY2ZiZTk0YzI4NjUzNzkyYzk4NzI3YmNhNmFkMDBjOGQzIiwiaWF0IjoxNTMwNTc1NTAzfQ.2d4-xoH1uMJqJ1gKon4CjhzqWeNtynVWsT4NRONZM34"
+}
+```
 
-## Stretch Goal
-* Create a **very rudimentary** front end using jQuery/vanilla Javascript to make a request to your API to authenticate yourself as a user. You can start by making a signup form that has username/password/email input fields. Upon form submission, send those fields to your server via a front end AJAX request, and send a response back to display to your front end that confirms you successfully signed up. 
-* **This is a heavy stretch goal and should be prioritized last. The instructional team will not assist you with this goal**. 
+Returns 409 if username and email aren't unique, 400 if request is missing any required information.
 
-## Documentation
-Add your Travis badge to the top of your README. List all of your registered routes and describe their behavior. Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it. Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.
+#### GET /api/login
+
+This route requires the username and password to be base64 encrypted and included as the request header's Authentication tag.
+
+```
+http -a Larry:McMurtry localhost:3000/api/login
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiJhNmQzY2ZlMzA2OTczZmUyNzQ5OTg2ZDFkODBiMTMyYzhhY2VhY2IwMGM1MTVlYTExNWVkNGQ3YzNhMDYxMDQzYzI1ZGRlNjcxNTE1MGQ0MzIzYTRhZmMwYzg1OTQwZjA4N2ViNzE1MjMxN2FjODliYzY2Zjg3NjI2YzdiZDZlY2JhYjE3ODZmNGNkZDAzZGM3NmZmZjA5MjExMjYwM2MxMzY5MmU5YTI0NGQ2ZGI3NzBlZDM4OTQzOTA4ZjJiMGQ0MTBjMDg2MWMzMzdlMzFmYzM3OTEyYzNlMDY1MmYxNDUwMGZmYWJmODQwOThiODk0OWNkNzE5MzFjMzBkOTZiIiwiaWF0IjoxNTMwNTc1OTUwfQ.sY9IlAs0QbkiNPd9Aiisstk2GctDAPsSxRhRuQ4v7oA"
+}
+```
+
+Returns 400 if username not found, 500 if password is incorrect (as a benefit to hackers everywhere).
+
 
 
