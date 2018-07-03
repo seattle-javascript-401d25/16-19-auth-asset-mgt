@@ -60,7 +60,6 @@ accountSchema.methods.createTokenPromise = function createTokenPromise() {
 const skipInit = process.env.NODE_ENV === 'development';
 
 const Account = mongoose.model('accounts', accountSchema, 'accounts', skipInit);
-'use strict';
 
 Account.create = (username, email, password) => {
   return bcrypt.hash(password, HASH_ROUNDS)
