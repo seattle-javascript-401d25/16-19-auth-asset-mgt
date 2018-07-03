@@ -26,7 +26,7 @@ Create a model with at least four properties that belongs to an account. The mod
   * pass data as stringifed JSON in the body of a **POST** request to create a new resource
   * on success respond with a 200 status code and an authentication token
   * on failure due to a bad request send a 400 status code
-  * on failure due to bad token or lack of token respond with a 401 status code
+  * **OR** on failure due to bad token or lack of token respond with a 401 status code
 * `GET /<resource-name>/:id` 
   * pass a bearer authentication middleware in the request to authorize the creation of the resource
   * on success respond with a 200 status code and a resource
