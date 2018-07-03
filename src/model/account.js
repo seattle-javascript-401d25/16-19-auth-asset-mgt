@@ -59,7 +59,7 @@ accountSchema.methods.createTokenPromise = function createTokenPromise() {
       // at this point, we have a token seed generated
       // "sign" means "to encrypt"
       // this jsonWebToken.sign returns a promise that resolves with a token. When it resolves, I now have a token
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET);
     })
     .catch((err) => {
       // you have to make a design choice how explicit you want to be with your error messages when handling errors for signup/login
