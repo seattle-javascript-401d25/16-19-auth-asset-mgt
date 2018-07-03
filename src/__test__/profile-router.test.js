@@ -2,7 +2,7 @@ import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
 import { pCreateAccountMock } from './lib/account-mock';
-import { removeAllResources } from './lib/profile-mock';
+// import { removeAllResources } from './lib/profile-mock';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api`;
 
@@ -16,7 +16,7 @@ describe('TESTING ROUTER PROFILE', () => {
 
   afterAll(stopServer);
   beforeEach(async () => {
-    await removeAllResources();
+    // await removeAllResources();
     try {
       mockData = await pCreateAccountMock();
       account = mockData.account; /*eslint-disable-line*/
@@ -55,6 +55,27 @@ describe('TESTING ROUTER PROFILE', () => {
         expect(res).toEqual('DEVIN');
       } catch (err) {
         expect(err.status).toEqual(400);
+      }
+    });
+
+    test('POST 404 for trying to POST a profile with a bad PATH', async () => {
+      try {
+        const res = await superagent.post(`${apiUrl}/BADPATH`)
+          .set('Authorization', `Bearer ${token}`);
+        expect(res).toEqual('DEVIN');
+      } catch (err) {
+        expect(err.status).toEqual(404);
+      }
+    });
+  });
+
+  describe('GET PROFILE ROUTES TESTING', () => {
+    test('GET 404 to /api/profiles/?id= for a BAD profile PATH', async () => {
+      try {
+        const res = await superagent.get(`${apiUrl}/notGonnaWork`);
+        expect(res).toEqual('DEVIN');
+      } catch (err) {
+        expect(err.status).toEqual(404);
       }
     });
   });

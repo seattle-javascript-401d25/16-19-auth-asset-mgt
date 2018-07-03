@@ -31,6 +31,36 @@ describe('AUTH Router', () => {
       });
   });
 
+  test('POST 400 to /api/signup with no UN or PW', async () => {
+    const mockAccount = {
+      // username: faker.internet.userName(),
+      email: faker.internet.email(),
+      // password: '1234',
+    };
+    try {
+      const res = await superagent.post(`${apiUrl}/profiles`)
+        .send(mockAccount);
+      expect(res).toEqual('DEVIN');
+    } catch (err) {
+      expect(err.status).toEqual(400);
+    }
+  });
+
+  test('POST 404 to /api/signup with bad path', async () => {
+    const mockAccount = {
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: '1234',
+    };
+    try {
+      const res = await superagent.post(`${apiUrl}/profile`)
+        .send(mockAccount);
+      expect(res).toEqual('DEVIN');
+    } catch (err) {
+      expect(err.status).toEqual(404);
+    }
+  });
+
   test('GET 200 to api/login for successful login and receipt of a TOKEN', () => {
     return pCreateAccountMock()
       .then((mockData) => {
@@ -46,14 +76,25 @@ describe('AUTH Router', () => {
       });
   });
 
-  test('GET 400 to api/login for unsuccessful login with bad un and pw', () => {
+  test('GET 401 to api/login for unsuccessful login with bad UN and PW', () => {
     return superagent.get(`${apiUrl}/login`)
       .auth('notgonna', 'work')
       .then((res) => {
         throw res;
       })
       .catch((err) => {
-        expect(err.status).toEqual(400);
+        expect(err.status).toEqual(401);
       });
+  });
+
+
+  test('GET 404 for trying to GET /api/login with a bad PATH', async () => {
+    try {
+      const res = await superagent.get(`${apiUrl}/logi`)
+        .set('Authorization', 'Bearer token as well');
+      expect(res).toEqual('DEVIN');
+    } catch (err) {
+      expect(err.status).toEqual(404);
+    }
   });
 });
