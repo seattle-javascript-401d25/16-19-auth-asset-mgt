@@ -9,8 +9,9 @@
   * how long you spent
   * a link to your pull request
   * a link to your deployed Heroku URL (same as previous labs, but with updated changes deployed)
-  * an attached screenshot that shows you succesfully uploaded a file to your AWS S3 bucket, i.e. [a screenshot of your bucket that shows the hashed file name provided by Multer](https://judyvue-401d25.s3.us-west-2.amazonaws.com/10871377b5c7bf674821c70427031d7d.Capture.PNG)
   * **A 0 will be given for failing PRs, no Travis CI hookup, or no Heroku URL**
+   * an attached screenshot that shows you succesfully uploaded a file to your AWS S3 bucket, i.e. ![a screenshot of your bucket that shows the hashed file name provided by Multer](https://judyvue-401d25.s3.us-west-2.amazonaws.com/10871377b5c7bf674821c70427031d7d.Capture.PNG)
+   * [an attached screenshot that shows you successfully uploaded a file to your AWS S3 bucket](https://judyvue-401d25.s3.us-west-2.amazonaws.com/10871377b5c7bf674821c70427031d7d.Capture.PNG)
   * No 0 will be issued if you can't achieve a real upload to your bucket, but you will be docked points accordingly
 
 ## Resources
@@ -20,6 +21,20 @@
 * [aws sdk](https://github.com/aws/aws-sdk-js)
 * [aws sdk s3 docs](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html)
 * [aws sdk mock docs](https://github.com/dwyl/aws-sdk-mock)
+
+## ENV Variabe Setup
+* Your `.env` file should now look like this:
+```
+NODE_ENV=development
+PORT=3000
+MONGODB_URI=mongodb://localhost/testing
+SECRET_KEY=random stuff here (also does not need to be called *SECRET_KEY*, can be named anything you want as long as you're consistent in your code)
+AWS_BUCKET=your_bucket_name
+AWS_SECRET_ACCESS_KEY=your_access_key
+AWS_ACCESS_KEY_ID=your_access_key_id
+```
+* The `AWS` variables above **must be EXACTLY formatted in that way or things will break**. 
+* Ensure you also make appropriate changes to your `test.env.js` module per today's lecture code. Reference the corresponding `test.env.js` in lecture code and adjust your `test.env.js` accordingly. 
 
 ## Feature Tasks  
 Create a third model that represents a file asset. The file should be stored on AWS S3, and metadata about the file should be stored in your mongo database.  
