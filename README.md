@@ -32,13 +32,12 @@ Returns 409 if username and email aren't unique, 400 if request is missing any r
 
 #### GET /api/login
 
-This route requires the username and password to be base64 encrypted and included as the request header's Authentication tag.
+This route requires the username and password to be base64 encrypted and included as the request header's Authentication tag. The route returns a JSON Web Token whose payload includes the database ID or the user's profile. This can be used in a subsequent GET /api/profiles request.
 
 ```
 http -a Larry:McMurtry localhost:3000/api/login
 
 {
-    "id": "5b3bf68e06fde67494fa7ab0",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiIyMGNiZmExODFmZmZhYTk4ZGRkMDEzNDExMTM4NDI2YmUwZGU2NTY0NTBhYTA3ZWIiLCJpYXQiOjE1MzA2NTY2MzZ9.0XAT9ltDxe34pxpVZwKLb17b7n6ZpKj_N04wVwviTLg"
 }
 ```
