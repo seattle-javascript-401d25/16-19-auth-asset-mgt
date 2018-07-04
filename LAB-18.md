@@ -10,8 +10,7 @@
   * a link to your pull request
   * a link to your deployed Heroku URL (same as previous labs, but with updated changes deployed)
   * **A 0 will be given for failing PRs, no Travis CI hookup, or no Heroku URL**
-   * an attached screenshot that shows you succesfully uploaded a file to your AWS S3 bucket, i.e. ![a screenshot of your bucket that shows the hashed file name provided by Multer](https://judyvue-401d25.s3.us-west-2.amazonaws.com/10871377b5c7bf674821c70427031d7d.Capture.PNG)
-   * [an attached screenshot that shows you successfully uploaded a file to your AWS S3 bucket](https://judyvue-401d25.s3.us-west-2.amazonaws.com/10871377b5c7bf674821c70427031d7d.Capture.PNG)
+   * an attached screenshot that shows you succesfully uploaded a file to your AWS S3 bucket, i.e. ![a screenshot of your bucket that shows the hashed file name provided by Multer](https://github.com/seattle-javascript-401d25/16-19-auth-asset-mgt/blob/master/Capture.PNG)
   * No 0 will be issued if you can't achieve a real upload to your bucket, but you will be docked points accordingly
 
 ## Resources
