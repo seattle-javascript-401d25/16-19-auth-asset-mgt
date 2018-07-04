@@ -27,8 +27,8 @@
 ```
 NODE_ENV=development
 PORT=3000
-MONGODB_URI=mongodb://localhost/testing
-SECRET_KEY=random stuff here (also does not need to be called *SECRET_KEY*, can be named anything you want as long as you're consistent in your code)
+MONGODB_URI=mongodb://localhost/testing (*testing* can be any name you want)
+SECRET_KEY=random stuff here ( *SECRET_KEY* can be named anything you want as long as you're consistent in your code)
 AWS_BUCKET=your_bucket_name
 AWS_SECRET_ACCESS_KEY=your_access_key
 AWS_ACCESS_KEY_ID=your_access_key_id
