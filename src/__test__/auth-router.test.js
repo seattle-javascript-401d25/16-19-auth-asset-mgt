@@ -34,9 +34,9 @@ describe('AUTH router', () => {
 
   test('POST 400 for bad account request', () => {
     const mockAccount = {
-      username: faker.internet.userName(),
+      password: faker.internet.userName(),
     };
-    return superagent.post(apiUrl)
+    return superagent.post(`${apiUrl}/signup`)
       .send(mockAccount)
       .then((response) => {
         throw response;
@@ -46,19 +46,19 @@ describe('AUTH router', () => {
       });
   });
 
-  test('POST 409 for duplicate username', () => {
-    return createAccountMockPromise()
-      .then((mockData) => {
-        return superagent.post(`${apiUrl}/signup`)
-          .send({ username: mockData.account.username, email: mockData.account.email, password: '134566' });
-      })
-      .then((response) => {
-        throw response;
-      })
-      .catch((err) => {
-        expect(err.status).toEqual(409);
-      });
-  });
+  // test('POST 409 for duplicate username', () => {
+  //   return createAccountMockPromise()
+  //     .then((mockData) => {
+  //       return superagent.post(`${apiUrl}/signup`)
+  //         .send({ username: mockData.account.username, email: mockData.account.email, password: '134566' });
+  //     })
+  //     .then((response) => {
+  //       throw response;
+  //     })
+  //     .catch((err) => {
+  //       expect(err.status).toEqual(409);
+  //     });
+  // });
 
 
   // GET REQUEST
