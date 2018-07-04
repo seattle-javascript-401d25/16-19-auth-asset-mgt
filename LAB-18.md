@@ -21,7 +21,7 @@
 * [aws sdk s3 docs](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html)
 * [aws sdk mock docs](https://github.com/dwyl/aws-sdk-mock)
 
-## ENV Variabe Setup
+## ENV Variable Setup
 * **DO NOT PUSH UP YOUR AWS KEYS, ENSURE YOUR ENV FILE IS PROPERLY GITIGNORED.** 
 * Your `.env` file should now look like this:
 ```
