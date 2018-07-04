@@ -25,7 +25,8 @@ profileRouter.post('/api/profiles', bearerAuthMiddleware, (req, res, next) => {
 });
 
 profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (req, res, next) => {
-  if (!req.account) return next(new HttpErrors(400, 'GET PROFILE ROUTER: INVALID REQ'));
+  if (!req.account) return next(new HttpErrors(400, 'GET PROFILE ROUTER: invalid req'));
+
   if (!req.params.id) {
     return Profile.find({})
       .then((profiles) => {
@@ -36,7 +37,7 @@ profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (req, res, next) =
 
   Profile.findOne({ _id: req.params.id })
     .then((profile) => {
-      if (!profile) return next(new HttpErrors(400, 'PROFILE ROUTER GET: PROFILE NOT FOUND'));
+      if (!profile) return next(new HttpErrors(400, 'PROFILE ROUTER GET: profile not found'));
       return res.json(profile);
     })
     .catch(next);
