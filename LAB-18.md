@@ -56,4 +56,4 @@ Create a model with at least 4 properties that represents some type of file asse
 Same as previous labs with documentations on updated routes. 
 
 ## Stretch Goals
-It is the 4th of July? Why do you want to do this?
+It is the 4th of July. Why do you want to do this?
