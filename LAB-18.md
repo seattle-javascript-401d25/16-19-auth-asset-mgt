@@ -1,10 +1,11 @@
-![cf](https://i.imgur.com/7v5ASc8.png) Lab 19: Authorization - File Management
+![cf](https://i.imgur.com/7v5ASc8.png) Lab 18: Authorization - File Management
 ======
 
 ## Submission Instructions
 * Continue from previous authorization labs.
-* Submit on canvas 
-  * a question and observation
+* Submit on canvas: 
+  * an observation
+  * your original time estimate
   * how long you spent
   * a link to your pull request
   * a link to your deployed Heroku URL (same as previous labs, but with updated changes deployed)
