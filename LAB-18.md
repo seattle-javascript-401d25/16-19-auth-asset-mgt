@@ -43,7 +43,7 @@ AWS_ACCESS_KEY_ID=your_access_key_id
 Create a third model that represents a file asset. The file should be stored on AWS S3, and metadata about the file should be stored in your mongo database.  
   
 #### File Asset Model
-Create a model with at least 4 properties that represents some type of file asset (BLOB) resource (image, audio, movie, 3d file). One of the model's properties should map back to a corresponding account id. One of the properties should be `url` and should hold an AWS Location.
+Create a model with at least 4 properties that represents some type of file asset (BLOB) resource (image, audio, movie, 3d file). **Please do not use a "Sound" model like lecture code**. One of the model's properties should map back to a corresponding account id. Two of the properties should be `url` and `fileName` and should hold an AWS Location and AWS Key after getting a response back from AWS for a successful file upload.
 
 
 #### Server Endpoints
