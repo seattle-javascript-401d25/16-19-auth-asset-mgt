@@ -34,6 +34,7 @@ AWS_ACCESS_KEY_ID=your_access_key_id
 ```
 * The `AWS` variables above **must be EXACTLY formatted in that way or things will break**. 
 * Ensure you also make appropriate changes to your `test.env.js` module per today's lecture code. Reference the corresponding `test.env.js` in lecture code and adjust your `test.env.js` accordingly. 
+* Add your `env` variables to Heroku as well for a successful deployment. Go to your app's `Settings` tab and click the button `Reveal Config Vars` to add them accordingly ![Go to your app's `Settings` tab and click the button `Reveal Config Vars` to add them accordingly.](https://github.com/seattle-javascript-401d25/16-19-auth-asset-mgt/blob/master/heroku.png) 
 
 ## Feature Tasks  
 Create a third model that represents a file asset. The file should be stored on AWS S3, and metadata about the file should be stored in your mongo database.  
