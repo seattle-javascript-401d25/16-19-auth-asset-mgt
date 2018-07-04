@@ -10,11 +10,11 @@ export default (req, res, next) => {
 
   const stringAuthHeader = Buffer.from(base64AuthHeader, 'base64').toString();
   const [username, password] = stringAuthHeader.split(':');
-  if (!username || !password) return next(new HttpErrors(400, 'AUTH, INVALID REq'));
+  if (!username || !password) return next(new HttpErrors(400, 'AUTH, INVALID REQ'));
 
   return Account.findOne({ username })
     .then((account) => {
-      if (!account) return next(new HttpErrors(400, 'BASIC AUTH - INVALID REQ'));
+      if (!account) return next(new HttpErrors(401, 'BASIC AUTH - INVALID REQ'));
       return account.pVerifyPassword(password);
     })
     .then((account) => {

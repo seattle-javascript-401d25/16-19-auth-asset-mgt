@@ -19,7 +19,7 @@ export default (request, response, next) => {
       return Account.findOne({ tokenSeed: decryptedToken.tokenSeed });
     })
     .then((account) => {
-      if (!account) return next(new HttpErrors(400, 'BEARER AUTH - no account found'));
+      if (!account) return next(new HttpErrors(401, 'BEARER AUTH - no account found'));
       request.account = account;
       return next();
     })
