@@ -2,7 +2,7 @@
 ======
 
 ## Submission Instructions
-* Continue from previous authorization labs.
+* Continue from previous authorization labs in a new branch `lab-19`.
 * Submit on canvas: 
   * an observation
   * your original time estimate
