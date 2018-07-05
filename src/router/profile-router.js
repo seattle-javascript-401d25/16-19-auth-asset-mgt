@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import HttpErrors from 'http-errors';
 import Profile from '../model/profile';

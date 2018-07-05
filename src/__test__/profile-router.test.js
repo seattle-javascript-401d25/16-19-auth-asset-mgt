@@ -2,7 +2,7 @@ import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
 import { pCreateAccountMock } from './lib/account-mock';
-// import { removeAllResources } from './lib/profile-mock';
+import { removeAllResources } from './lib/profile-mock';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api`;
 
@@ -16,7 +16,7 @@ describe('TESTING ROUTER PROFILE', () => {
 
   afterAll(stopServer);
   beforeEach(async () => {
-    // await removeAllResources();
+    await removeAllResources();
     try {
       mockData = await pCreateAccountMock();
       account = mockData.account; /*eslint-disable-line*/

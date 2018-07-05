@@ -20,5 +20,6 @@ const imageSchema = mongoose.Schema({
   },
 }, { timestamps: true });
 
+
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('images', imageSchema, 'images', skipInit);
+export default mongoose.model('sounds', imageSchema, 'sounds', skipInit);
