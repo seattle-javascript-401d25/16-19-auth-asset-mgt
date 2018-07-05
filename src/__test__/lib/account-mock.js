@@ -1,32 +1,30 @@
-'use strict';
-
 import faker from 'faker';
 import Account from '../../model/account';
 
-const pCreateAccountMock = () => {
+const createAccountMockPromise = () => {
   const mockData = {};
-  const originalReq = {
+  const originalRequest = {
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    password: faker.lorem.word(8),
+    password: faker.lorem.words(8),
   };
-
-  return Account.create(originalReq.username, originalReq.email, originalReq.password)
+  return Account.create(originalRequest.username, originalRequest.email, originalRequest.password)
     .then((account) => {
-      mockData.originalReq = originalReq;
+      mockData.originalRequest = originalRequest;
       mockData.account = account;
-      return account.pCreateToken();
+      return account.createTokenPromise();
     })
     .then((token) => {
       mockData.token = token;
+    
       return Account.findById(mockData.account._id);
     })
     .then((account) => {
       mockData.account = account;
       return mockData;
     });
-};
+}; 
 
-const pRemoveAccountMock = () => Account.remove({});
+const removeAccountMockPromise = () => Account.remove({});
 
-export { pCreateAccountMock, pRemoveAccountMock };
+export { createAccountMockPromise, removeAccountMockPromise };

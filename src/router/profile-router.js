@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import HttpErrors from 'http-errors';
 import Profile from '../model/profile';
@@ -7,40 +6,44 @@ import logger from '../lib/logger';
 
 const profileRouter = new Router();
 
-profileRouter.post('/api/profiles', bearerAuthMiddleware, (req, res, next) => {
-  if (!req.account) return next(new HttpErrors(400, 'POST PROFILE_ROUTER: INVALID REQ'));
+profileRouter.post('/api/profiles', bearerAuthMiddleware, (request, response, next) => {
+  if (!request.account) return next(new HttpErrors(400, 'POST PROFILE ROUTER-AUTH: invalid request'));
+
   Profile.init()
     .then(() => {
       return new Profile({
-        ...req.body,
-        accountId: req.account._id,
-      }).save();
-    })
-    .then((profile) => {
-      logger.log(logger.INFO, `POST PROFILE ROUTER: new profile created with 200 code, ${JSON.stringify(profile)}`);
-      return res.json(profile);
+        ...request.body,
+        accountId: request.account._id,
+      })
+        .save()
+        .then((profile) => {
+          logger.log(logger.INFO, `POST PROFILE ROUTER: new profile created with 200 code, ${JSON.stringify(profile, null, 2)}`);
+          return response.json(profile);
+        })
+        .catch(next);
     })
     .catch(next);
   return undefined;
 });
 
-profileRouter.get('/api/profiles/:id?', (req, res, next) => {
-  if (!req.account) return next(new HttpErrors(400, 'GET PROFILE ROUTER: invalid req'));
-
-  if (!req.params.id) {
-    return Profile.find({})
+profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (request, response, next) => {
+  if (!request.account) return next(new HttpErrors(400, 'GET PROFILE ROUTER-AUTH: INVALID REQ'));
+  
+  if (!request.params.id) {
+    Profile.find({})
       .then((profiles) => {
-        return res.json(profiles);
+        return response.json(profiles);
       })
       .catch(next);
+    return undefined;
   }
-  Profile.init()
-    .then(() => {
-      return Profile.findOne({ _id: req.params.id });
-    })
+
+  Profile.findOne({ _id: request.params.id })
     .then((profile) => {
-      logger.log(logger.INFO, `Model Router: AFTER getting model: ${JSON.stringify(profile)}`);    
-      return res.json(profile);
+      if (!profile) return next(new HttpErrors(400, 'profile not found'));
+      logger.log(logger.INFO, `PROFILE ROUTER GET: found profile: ${JSON.stringify(profile, null, 2)}`);
+      return response.json(profile);
+
     })
   // Profile.findOne({ _id: req.params.id })
   //   .then((profile) => {
@@ -50,5 +53,6 @@ profileRouter.get('/api/profiles/:id?', (req, res, next) => {
     .catch(next);
   return undefined;
 });
+
 
 export default profileRouter;
