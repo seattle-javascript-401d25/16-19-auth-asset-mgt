@@ -24,7 +24,7 @@ profileRouter.post('/api/profiles', bearerAuthMiddleware, (req, res, next) => {
   return undefined;
 });
 
-profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (req, res, next) => {
+profileRouter.get('/api/profiles/:id?', (req, res, next) => {
   if (!req.account) return next(new HttpErrors(400, 'GET PROFILE ROUTER: invalid req'));
 
   if (!req.params.id) {
@@ -34,12 +34,19 @@ profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (req, res, next) =
       })
       .catch(next);
   }
-
-  Profile.findOne({ _id: req.params.id })
+  Profile.init()
+    .then(() => {
+      return Profile.findOne({ _id: req.params.id });
+    })
     .then((profile) => {
-      if (!profile) return next(new HttpErrors(400, 'PROFILE ROUTER GET: profile not found'));
+      logger.log(logger.INFO, `Model Router: AFTER getting model: ${JSON.stringify(profile)}`);    
       return res.json(profile);
     })
+  // Profile.findOne({ _id: req.params.id })
+  //   .then((profile) => {
+  //     if (!profile) return next(new HttpErrors(400, 'PROFILE ROUTER GET: profile not found'));
+  //     return res.json(profile);
+  //   })
     .catch(next);
   return undefined;
 });

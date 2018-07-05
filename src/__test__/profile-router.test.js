@@ -70,14 +70,16 @@ describe('TESTING ROUTER PROFILE', () => {
   });
 
   describe('GET PROFILE ROUTES TESTING', () => {
-    // test('200 GET for successful fetching of a model', async () => {
-    //   try {
-    //     const res = await superagent.get(`${apiUrl}/profiles/${mockData.account._id}`);
-    //     expect(res.status).toEqual(200);
-    //   } catch (err) {
-    //     expect(err.status).toEqual(404);
-    //   }
-    // });
+    test('200 GET for successful fetching of a model', async () => {
+      try {
+        const res = await superagent.get(`${apiUrl}/profiles/`)
+          .set('Authorization', `Bearer ${token}`);
+        expect(res.status).toEqual(200);
+      } catch (err) {
+        expect(err.status).toEqual('failing for 200 GET');
+      }
+    });
+    
     test('GET 404 to /api/profiles/?id= for a BAD profile PATH', async () => {
       try {
         const res = await superagent.get(`${apiUrl}/notGonnaWork`);
