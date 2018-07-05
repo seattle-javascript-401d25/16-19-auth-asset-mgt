@@ -14,5 +14,10 @@ const profileSchema = mongoose.Schema({
   },
 });
 
+// profileSchema.pre('findOne', function preHookCallback(done) {
+//   this.populate('accountId');
+//   done();
+// });
+
 const skipInit = process.env.NODE_ENV === 'development';
 export default mongoose.model('profiles', profileSchema, 'profiles', skipInit);
