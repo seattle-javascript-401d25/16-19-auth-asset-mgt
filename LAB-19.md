@@ -34,7 +34,7 @@
 ## Documentation
 This lab is less about the code and more about your ability to analyze test results and communicate them clearly to a potential client or executive team. Remember, your audience may not be as technically knowledgeable as you. 
 
-In your default README.md, include a new heading called "Load Testing Analysis". Use this section to describe the results of your load tests. Be sure to clarify if you are testing on `localhost:3000` or your Heroku app. If you are testing Heroku, clarify that you are using the free tier option for Heroku. 
+In your default README.md, include a new heading called "**Load Testing Analysis**". Use this section to describe the results of your load tests. Be sure to clarify if you are testing on `localhost:3000` or your Heroku app. If you are testing Heroku, clarify that you are using the free tier option for Heroku. 
 
 Explain terms such as RPS, latency, and percentiles to your reader, and describe what the numbers mean in terms of the performance of your app. Explain the differences between latency and response time. Explain the type of scenarios you used (in the case of this lab's MVP, only a POST request to `/api/signup` is all you have to address). 
 
