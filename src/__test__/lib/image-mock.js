@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import faker from 'faker';
-import { createAccountMockPromise, removeAccountMockPromise } from './account-mock';
+import { createAccountMockPromise, removeAccountMockPromise } from './account-mock'; /*eslint-disable-line*/
 import Image from '../../model/image';
 import Account from '../../model/account';
 

@@ -3,7 +3,7 @@ import { Router } from 'express';
 import HttpErrors from 'http-errors';
 import bearerAuthMiddleware from '../lib/middleware/bearer-auth-middleware';
 import Image from '../model/image';
-import { s3Upload, s3Remove } from '../lib/s3';
+import { s3Upload, s3Remove } from '../lib/s3'; /*eslint-disable-line*/
 import logger from '../lib/logger';
 
 const multerUpload = multer({ dest: `${__dirname}/../temp` });
