@@ -4,12 +4,12 @@ import superagent from 'superagent';
 import { startServer, stopServer } from '../lib/server';
 import { pCreateImageMock, removeImagesAndAccounts } from './lib/image-mock';
 
-const stitchJpg = `${__dirname}/asset/stitch.jpg`;
+const stitchJpg = `${__dirname}/asset/stitch.JPG`;  /*eslint-disable-line*/
 const apiUrl = `http://localhost:${process.env.PORT}/api/images`;
 
 describe('TESTING ROUTES AT /api/images', () => {
   let token;
-  let account;
+  let account;  /*eslint-disable-line*/
   let image;
   beforeAll(startServer);
   afterAll(stopServer);
@@ -49,7 +49,7 @@ describe('TESTING ROUTES AT /api/images', () => {
   });
 
   describe('GET ROUTS TO /api/images', () => {
-    test('200 GET /api/images for succesful fetching of an image', async () => {
+    test('200 GET /api/images for successful fetching of an image', async () => {
       try {
         const response = await superagent.get(`${apiUrl}/${image._id}`)
           .set('Authorization', `Bearer ${token}`);
