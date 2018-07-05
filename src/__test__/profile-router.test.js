@@ -1,72 +1,65 @@
 import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
-import { pCreateAccountMock } from './lib/account-mock';
+import { createAccountMockPromise } from './lib/account-mock';
 import { removeAllResources } from './lib/profile-mock';
+import Profile from '../model/profile';  /*eslint-disable-line*/
 
 const apiUrl = `http://localhost:${process.env.PORT}/api`;
 
-describe('TESTING ROUTER PROFILE', () => {
+
+describe('TESTING PROFILE ROUTER', () => {
   let mockData;
   let token;
   let account;
   beforeAll(async () => {
     startServer();
+    mockData = await createAccountMockPromise(); // this part blocks until we retrieve the resolved value. Anything in this "beforeAll" block will not run below this line until the "await" function resolves
+    token = mockData.token; /*eslint-disable-line*/
+    account = mockData.account; /*eslint-disable-line*/
   });
-
   afterAll(stopServer);
-  beforeEach(async () => {
-    await removeAllResources();
-    try {
-      mockData = await pCreateAccountMock();
-      account = mockData.account; /*eslint-disable-line*/
-      token = mockData.token; /*eslint-disable-line*/
-    } catch (err) {
-      return console.log(err);
-    }
-    return undefined;
-  });
+  afterEach(removeAllResources);
 
-  describe('POST PROFILE ROUTES TESTING', () => {
-    test('POST 200 to /api/profiles for successful profile creation', async () => {
+  describe('POST ROUTES TESTING', () => {
+    test('POST 200 to /api/profiles for successfully created profile', async () => {
       const mockProfile = {
-        bio: faker.lorem.words(40),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        bio: faker.lorem.words(60),
+        firstName: 'Devin',
+        lastName: 'Cunningham',
       };
       try {
-        const res = await superagent.post(`${apiUrl}/profiles`)
+        const response = await superagent.post(`${apiUrl}/profiles`)
           .set('Authorization', `Bearer ${token}`)
           .send(mockProfile);
-        expect(res.status).toEqual(200);
-        expect(res.body.accountId).toEqual(account._id.toString());
-        expect(res.body.firstName).toEqual(mockProfile.firstName);
-        expect(res.body.lastName).toEqual(mockProfile.lastName);
-        expect(res.body.bio).toEqual(mockProfile.bio);
+        expect(response.status).toEqual(200);
+        expect(response.body.accountId).toEqual(account._id.toString());
+        expect(response.body.firstName).toEqual(mockProfile.firstName);
+        expect(response.body.lastName).toEqual(mockProfile.lastName);
+        expect(response.body.bio).toEqual(mockProfile.bio);
       } catch (err) {
-        expect(err).toEqual('DEVIN');
+        expect(err.status).toEqual(200);
       }
     });
 
-    test('POST 400 for trying to POST a profile with a bad TOKEN', async () => {
+    test('POST 401 for trying to post a profile with a bad token', async () => {
       try {
-        const res = await superagent.post(`${apiUrl}/profiles`)
-          .set('Authorization', 'Bearer BADTOKEN');
-        expect(res).toEqual('DEVIN');
+        await superagent.post(`${apiUrl}/profiles`)
+          .set('Authorization', 'Bearer NOTGONNAWORK');
       } catch (err) {
         expect(err.status).toEqual(400);
       }
     });
+  });
 
-    test('POST 404 for trying to POST a profile with a bad PATH', async () => {
-      try {
-        const res = await superagent.post(`${apiUrl}/BADPATH`)
-          .set('Authorization', `Bearer ${token}`);
-        expect(res).toEqual('DEVIN');
-      } catch (err) {
-        expect(err.status).toEqual(404);
-      }
-    });
+  test('POST 404 for trying to POST a profile with a bad PATH', async () => {
+    try {
+      const res = await superagent.post(`${apiUrl}/BADPATH`)
+        .set('Authorization', `Bearer ${token}`);
+      expect(res).toEqual('DEVIN');
+    } catch (err) {
+      expect(err.status).toEqual(404);
+    }
   });
 
   describe('GET PROFILE ROUTES TESTING', () => {

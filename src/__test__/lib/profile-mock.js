@@ -1,14 +1,13 @@
 import faker from 'faker';
 import Profile from '../../model/profile';
-import { pCreateAccountMock, pRemoveAccountMock } from './account-mock';
+import { createAccountMockPromise, removeAccountMockPromise } from './account-mock';
 
-const pCreateProfileMock = () => {
+const createProfileMockPromise = () => {
   const mockData = {};
-  return pCreateAccountMock()
+  return createAccountMockPromise()
     .then((mockAccountData) => {
       mockData.account = mockAccountData.account;
-      mockData.token = mockAccountData.token;
-
+      
       const mockProfile = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -29,8 +28,8 @@ const pCreateProfileMock = () => {
 const removeAllResources = () => {
   return Promise.all([
     Profile.remove({}),
-    pRemoveAccountMock(),
+    removeAccountMockPromise(),
   ]);
 };
 
-export { pCreateProfileMock, removeAllResources };
+export { createProfileMockPromise, removeAllResources };

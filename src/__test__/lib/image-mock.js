@@ -1,16 +1,16 @@
 import 'babel-polyfill';
 import faker from 'faker';
-import { pCreateAccountMock, pRemoveAccountMock } from './account-mock'; /*eslint-disable-line*/
+import { createAccountMockPromise, removeAccountMockPromise } from './account-mock';
 import Image from '../../model/image';
 import Account from '../../model/account';
 
-const pCreateImageMock = async () => {
+const createImageMockPromise = async () => {
   const mockData = {};
-  const mockAcctRes = await pCreateAccountMock();
-  mockData.account = mockAcctRes.account;
-  mockData.token = mockAcctRes.token;
+  const mockAcctResponse = await createAccountMockPromise();
+  mockData.account = mockAcctResponse.account;
+  mockData.token = mockAcctResponse.token;
   const image = await new Image({
-    title: faker.lorem.words(2),
+    title: faker.lorem.words(3),
     url: faker.random.image(),
     fileName: faker.system.fileName(),
     accountId: mockData.account._id,
@@ -26,4 +26,4 @@ const removeImagesAndAccounts = () => {
   ]);
 };
 
-export { pCreateImageMock, removeImagesAndAccounts };
+export { createImageMockPromise, removeImagesAndAccounts };

@@ -1,10 +1,8 @@
-'use strict';
-
 import superagent from 'superagent';
 import faker from 'faker';
 
 import { startServer, stopServer } from '../lib/server';
-import { pCreateAccountMock, pRemoveAccountMock } from './lib/account-mock';
+import { createAccountMockPromise, removeAccountMockPromise } from './lib/account-mock';
 
 
 const apiUrl = `http://localhost:${process.env.PORT}/api`;
@@ -12,89 +10,63 @@ const apiUrl = `http://localhost:${process.env.PORT}/api`;
 describe('AUTH Router', () => {
   beforeAll(startServer);
   afterAll(stopServer);
-  afterEach(pRemoveAccountMock);
+  afterEach(removeAccountMockPromise);
 
   test('POST 200 to /api/signup for successful account creation and receipt of a TOKEN', () => {
     const mockAccount = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
-      password: '1234',
+      password: 'password',
     };
     return superagent.post(`${apiUrl}/signup`)
       .send(mockAccount)
-      .then((res) => {
-        expect(res.status).toEqual(200);
-        expect(res.body.token).toBeTruthy();
+      .then((response) => {
+        expect(response.status).toEqual(200);
+        expect(response.body.token).toBeTruthy();
       })
       .catch((err) => {
         throw err;
       });
   });
 
-  test('POST 400 to /api/signup with no UN or PW', async () => {
-    const mockAccount = {
-      // username: faker.internet.userName(),
-      email: faker.internet.email(),
-      // password: '1234',
-    };
-    try {
-      const res = await superagent.post(`${apiUrl}/profiles`)
-        .send(mockAccount);
-      expect(res).toEqual('DEVIN');
-    } catch (err) {
-      expect(err.status).toEqual(400);
-    }
+  test('POST 409 to api/signup for duplicate username', () => {
+    return createAccountMockPromise()
+      .then((mockData) => {
+        return superagent.post(`${apiUrl}/signup`)
+          .send({ username: mockData.account.username, email: mockData.account.email, password: '134566' });
+      })
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(409);
+      });
   });
 
-  test('POST 404 to /api/signup with bad path', async () => {
-    const mockAccount = {
-      username: faker.internet.userName(),
-      email: faker.internet.email(),
-      password: '1234',
-    };
-    try {
-      const res = await superagent.post(`${apiUrl}/profile`)
-        .send(mockAccount);
-      expect(res).toEqual('DEVIN');
-    } catch (err) {
-      expect(err.status).toEqual(404);
-    }
-  });
 
   test('GET 200 to api/login for successful login and receipt of a TOKEN', () => {
-    return pCreateAccountMock()
+    return createAccountMockPromise()
       .then((mockData) => {
         return superagent.get(`${apiUrl}/login`)
-          .auth(mockData.account.username, mockData.originalReq.password);
+          .auth(mockData.account.username, mockData.originalRequest.password);
       })
-      .then((res) => {
-        expect(res.status).toEqual(200);
-        expect(res.body.token).toBeTruthy();
+      .then((response) => {
+        expect(response.status).toEqual(200);
+        expect(response.body.token).toBeTruthy();
       })
       .catch((err) => {
         throw err;
       });
   });
 
-  test('GET 401 to api/login for unsuccessful login with bad UN and PW', () => {
+  test('GET 400 to /api/login for unsuccessful login with bad username and password', () => {
     return superagent.get(`${apiUrl}/login`)
-      .auth('notgonna', 'work')
-      .then((res) => {
-        throw res;
+      .auth('badUSERNAME', 'badPASSWORD')
+      .then((response) => {
+        throw response;
       })
       .catch((err) => {
-        expect(err.status).toEqual(401);
+        expect(err.status).toEqual(400);
       });
-  });
-
-
-  test('GET 404 for trying to GET /api/login with a bad PATH', async () => {
-    try {
-      const res = await superagent.get(`${apiUrl}/logi`)
-        .set('Authorization', 'Bearer token as well');
-      expect(res).toEqual('DEVIN');
-    } catch (err) {
-      expect(err.status).toEqual(404);
-    }
   });
 });

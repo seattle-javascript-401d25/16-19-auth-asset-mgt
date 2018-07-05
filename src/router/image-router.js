@@ -18,12 +18,10 @@ imageRouter.post('/api/images', bearerAuthMiddleware, multerUpload.any(), (reque
 
   const [file] = request.files;
   logger.log(logger.INFO, `IMAGE ROUTER POST: valid file ready to to upload: ${JSON.stringify(file, null, 2)}`);
-
   const key = `${file.filename}.${file.originalname}`;
   return s3Upload(file.path, key)
     .then((url) => {
       logger.log(logger.INFO, `IMAGE ROUTER POST: received a valid URL from Amazon S3: ${url}`);
-
       return new Image({
         title: request.body.title,
         accountId: request.account._id,
@@ -54,3 +52,4 @@ imageRouter.get('/api/images/:id?', bearerAuthMiddleware, (request, response, ne
 // TODO: write a imageRouter.delete here
 
 export default imageRouter;
+

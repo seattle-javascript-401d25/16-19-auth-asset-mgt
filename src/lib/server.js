@@ -4,22 +4,32 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import logger from './logger';
+
+// middleware
 import errorMiddleWare from '../lib/middleware/error-middleware';
 import loggerMiddleware from '../lib/middleware/logger-middleware';
+
+// our routes
 import authRouter from '../router/auth-router';
 import profileRouter from '../router/profile-router';
+import imageRouter from '../router/image-router';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 let server = null;
 
+
+// third party apps
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// our own api routers or middleware
 app.use(loggerMiddleware);
 app.use(authRouter);
 app.use(profileRouter);
-
+app.use(imageRouter);
+// catch all
 app.all('*', (request, response) => {
   console.log('Returning a 404 from the catch/all route');
   return response.sendStatus(404).send('Route Not Registered');
@@ -32,7 +42,7 @@ const startServer = () => {
   return mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       server = app.listen(PORT, () => {
-        console.log('Server is on:', PORT);
+        console.log('Server up:', PORT);
       });
     })
     .catch((err) => {

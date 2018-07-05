@@ -4,9 +4,11 @@ import { promisify } from 'util';
 import Account from '../../model/account';
 
 const jwtVerify = promisify(jsonWebToken.verify);
+require('dotenv').config();
 
 export default (request, response, next) => {
   if (!request.headers.authorization) return next(new HttpErrors(400, 'BEARER AUTH MIDDLEWARE: no headers auth'));
+  console.log(request.headers.authorization, 'AUTHORIZATION');
 
   const token = request.headers.authorization.split('Bearer ')[1];
   if (!token) return next(new HttpErrors(400, 'BEARER AUTH MIDDLEWARE: no token'));
@@ -16,10 +18,12 @@ export default (request, response, next) => {
       return Promise.reject(new HttpErrors(400, `BEARER AUTH - jsonWebToken error ${JSON.stringify(error)}`));
     })
     .then((decryptedToken) => {
+      console.log(decryptedToken, 'DECRYPTED TOKEN');
       return Account.findOne({ tokenSeed: decryptedToken.tokenSeed });
     })
     .then((account) => {
-      if (!account) return next(new HttpErrors(401, 'BEARER AUTH - no account found'));
+      if (!account) return next(new HttpErrors(400, 'BEARER AUTH - no account found'));
+
       request.account = account;
       return next();
     })
