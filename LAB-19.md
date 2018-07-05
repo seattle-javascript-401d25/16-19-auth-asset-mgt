@@ -27,7 +27,7 @@
 
 * Create a `load-test-create-user` module that will generate random user data through the use of `faker` and `uuid`. 
 
-* Create one or more `json` files that configures the environment for your Artillery test to run on. Play around with the numbers for various phases until you find the maximum number of requests your API can make until it breaks. 
+* Create one or more `json` files that configures the environment for your Artillery test to run on. Play around with the numbers for various phases. 
 
 * Remember, in this context, "breaking" doesn't mean any 400-range errors from your API itself. Breaking means `ECONNREFUSED` from localhost or `503` errors from Heroku - basically, anything that indicates your request never completed because you overloaded the server. 
 
