@@ -1,0 +1,27 @@
+{
+  "config": {
+    "target": "http://localhost:3000",
+    "phases": [
+      {
+        "duration": 2,
+        "arrivalRate": 20
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "post": {
+            "url": "/api/signup",
+            "json": {
+              "username": "Devin",
+              "email": "Devin@Cunningham.com",
+              "password": "password"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

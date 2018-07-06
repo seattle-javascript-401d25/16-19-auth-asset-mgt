@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DevinTyler26/16-19-auth-asset-mgt.svg?branch=lab-16)](https://travis-ci.org/DevinTyler26/16-19-auth-asset-mgt)
+
 ![cf](https://i.imgur.com/7v5ASc8.png) Lab 16: Basic Authentication
 ======
 
@@ -60,4 +62,6 @@ Create a user `Account` model that keeps track of a username, email, hashed pass
 ## Documentation
 Add your Travis badge to the top of your README. List all of your registered routes and describe their behavior. Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it. Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.
 
-
+## Documentation
+- /signup POST will make a user account with the given username, email, and password. This will store this information in a db with the password turned into a hashed password
+- /login GET will allow a pre-existing user to log bac into their account
