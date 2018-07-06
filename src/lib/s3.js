@@ -9,17 +9,16 @@ const s3Upload = (path, key) => {
     Bucket: process.env.AWS_BUCKET,
     Key: key,
     ACL: 'public-read',
-    Body: fs.createReadStream(path), // sends data of file one chunk at a time
+    Body: fs.createReadStream(path),
   };
 
-  // amazonS3's upload method expects an argument of the above options
+
   return amazonS3.upload(uploadOptions)
-  // this is amazonS3's internal way of promisifying their callback functions
     .promise()
     .then((response) => {
       logger.log(logger.INFO, `RECEIVED RESPONSE FROM AWS: ${JSON.stringify(response, null, 2)}`);
       return fs.remove(path)
-        .then(() => response.Location) // this returns the generated AWS S3 bucket URL for our file after a successful upload to S3
+        .then(() => response.Location)
         .catch(Promise.reject);
     }) 
     .catch((err) => {

@@ -70,7 +70,7 @@ describe('TESTING ROUTES AT /api/images', () => {
       try {
         const response = await superagent.delete(`${apiUrl}/${image._id}`)
           .set('Authorization', `Bearer ${token}`);
-        expect(response.status).toEqual(202);
+        expect(response.status).toEqual(200);
         // expect(response.body.title).toEqual(null);
         // expect(response.body.accountId).toEqual(null);
         // expect(response.body.url).toEqual(null);

@@ -6,8 +6,6 @@ import Image from '../model/image';
 import { s3Upload, s3Remove } from '../lib/s3'; /*eslint-disable-line*/
 import logger from '../lib/logger';
 
-// jest.setTimeout(30000);
-
 const multerUpload = multer({ dest: `${__dirname}/../temp` });
 
 const imageRouter = new Router();
@@ -54,18 +52,18 @@ imageRouter.get('/api/images/:id?', bearerAuthMiddleware, (request, response, ne
 
 // TODO: write a imageRouter.delete here
 imageRouter.delete('/api/images/:id?', bearerAuthMiddleware, (request, response, next) => {
-  if (!request.account) return next(new HttpErrors(401, 'IMAGE ROUTER GET: invalid request'));
-  if (!request.params.id) return next(new HttpErrors(400, 'IMAGE ROUTER GET: no id provided'));
+  if (!request.account) return next(new HttpErrors(401), 'IMAGE ROUTER DELETE: invalid request');
+  if (!request.params.id) return next(new HttpErrors(400, 'IMAGE ROUTER DELETE: no id provided'));
   return Image.findById(request.params.id)
     .then((image) => {
-      const imgID = image.fileName;
-      return s3Remove(imgID);
+      if (!image) return next(new HttpErrors(404, 'IMAGE ROUTER DELETE: IMAGE image not found in database'));
+      const key = image.fileName;
+      return s3Remove(key);
     })
-    .then(() => {
-      logger.log(logger.INFO, 'IMAGE ROUTER DELETE: DELETED IMG FROM S3');
-    })
-    .catch(next); 
+    .then((result) => {
+      return response.json(result);
+    })    
+    .catch(next);
 });
 
 export default imageRouter;
-
