@@ -2,7 +2,7 @@
 
 import superagent from 'superagent';
 import { startServer, stopServer } from '../lib/server';
-import { createImageMockPromise, removeImagesAndAccounts } from './lib/image-mock';
+import { createImageMockPromise } from './lib/image-mock';
 
 const dogMp3 = `${__dirname}/asset/stitch.JPG`;
 const apiUrl = `http://localhost:${process.env.PORT}/api/images`;
@@ -24,9 +24,9 @@ describe('TESTING ROUTES AT /api/images', () => {
     }
     return undefined;
   });
-  afterEach(async () => {
-    await removeImagesAndAccounts();
-  });
+  // afterEach(async () => {
+  //   await removeImagesAndAccounts();
+  // });
 
   describe('POST ROUTES TO /api/images', () => {
     test('POST 200', async () => {
@@ -61,6 +61,23 @@ describe('TESTING ROUTES AT /api/images', () => {
       } catch (err) {
         console.log(err);
         expect(err).toEqual('SHOULDNT BE HERE FOR A GET 200!!!');
+      }
+    });
+  });
+
+  describe('DELETE ROUTES to /api/images', () => {
+    test('202 GET /api/images for successful DELETE of a image', async () => {
+      try {
+        const response = await superagent.delete(`${apiUrl}/${image._id}`)
+          .set('Authorization', `Bearer ${token}`);
+        expect(response.status).toEqual(202);
+        // expect(response.body.title).toEqual(null);
+        // expect(response.body.accountId).toEqual(null);
+        // expect(response.body.url).toEqual(null);
+        // expect(response.body.fileName).toEqual(null);
+      } catch (err) {
+        console.log(err);
+        expect(err).toEqual('SHOULDNT BE HERE FOR A DELETE 202!!!');
       }
     });
   });
