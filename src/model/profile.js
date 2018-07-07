@@ -1,5 +1,3 @@
-'use strict';
- 
 import mongoose from 'mongoose';
 
 const profileSchema = mongoose.Schema({
@@ -15,6 +13,4 @@ const profileSchema = mongoose.Schema({
 });
 
 const skipInit = process.env.NODE_ENV === 'development';
-
 export default mongoose.model('profiles', profileSchema, 'profiles', skipInit);
-
