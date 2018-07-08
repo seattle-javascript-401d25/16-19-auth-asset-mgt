@@ -3,7 +3,7 @@ import { Router } from 'express';
 import HttpErrors from 'http-errors';
 import bearerAuthMiddleware from '../lib/middleware/bearer-auth-middleware';
 import Sound from '../model/sound';
-import { s3Upload, s3Remove } from '../lib/s3';
+import { s3Upload } from '../lib/s3';
 import logger from '../lib/logger';
 
 const multerUpload = multer({ dest: `${__dirname}/../temp` });

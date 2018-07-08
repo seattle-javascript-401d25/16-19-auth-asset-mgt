@@ -9,7 +9,7 @@ const apiUrl = `http://localhost:${process.env.PORT}/api/sounds`;
 
 describe('TESTING ROUTES AT /api/sounds', () => {
   let token;
-  let account;
+  let account; /*eslint-disable-line*/
   let sound;
   beforeAll(startServer);
   afterAll(stopServer);
@@ -46,6 +46,34 @@ describe('TESTING ROUTES AT /api/sounds', () => {
       }
       return undefined;
     });
+
+
+    test('POST 400 on bad request', async () => {
+      try {
+        const response = await superagent.post(apiUrl)
+          .set('Authorization', `Bearer ${token}`)
+          .field('BADFIELDNAME', 'BADFIELD')
+          .attach('sound', dogMp3);
+
+        expect(response).toBe('foo');
+      } catch (err) {
+        expect(err.status).toBe(400);
+      }
+    });
+
+    test('POST 401 on bad token', async () => {
+      try {
+        const badToken = 'BADTOKEN';
+        const response = await superagent.post(apiUrl)
+          .set('Authorization', `Bearer ${badToken}`)
+          .field('BADFIELDNAME', 'BADFIELD')
+          .attach('sound', dogMp3);
+
+        expect(response).toBe('foo');
+      } catch (err) {
+        expect(err.status).toBe(401);
+      }
+    });
   });
 
   describe('GET ROUTES to /api/sounds', () => {
@@ -59,8 +87,29 @@ describe('TESTING ROUTES AT /api/sounds', () => {
         expect(response.body.url).toEqual(sound.url);
         expect(response.body.fileName).toEqual(sound.fileName);
       } catch (err) {
-        console.log(err);
+      console.log(err, 'ERROR FROM sound-ROUTER-TEST: get 200 test'); /*eslint-disable-line*/
         expect(err).toEqual('FAILING IN GET 200 POST');
+      }
+    });
+
+    test('404 GET due to bad id', async () => {
+      try {
+        const response = await superagent.get(`${apiUrl}/${'BADID'}`)
+          .set('Authorization', `Bearer ${token}`);
+
+        expect(response).toBe('foo');
+      } catch (err) {
+        expect(err.status).toBe(404);
+      }
+    });
+
+    test('401 GET due to bad token', async () => {
+      try {
+        const response = await superagent.get(`${apiUrl}/${sound._id}`)
+          .set('Authorization', `Bearer ${'BADTOKEN'}`);
+        expect(response).toEqual('foo');
+      } catch (err) {
+        expect(err.status).toBe(401);
       }
     });
   });
