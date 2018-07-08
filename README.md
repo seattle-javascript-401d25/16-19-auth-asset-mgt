@@ -1,63 +1,105 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) Lab 16: Basic Authentication
 ======
 
-## Submission Instructions
-* Work in a fork of this repository
-* Work in a branch on your fork called `lab-<current lab number>`
-* Set up Travis on your forked repo
-* **Deploy to Heroku**
-* Open a pull request to this repository
-* Submit on canvas 
-  * a question and observation
-  * your original estimate
-  * how long you spent, 
-  * a link to your pull request (**You will get a 0 if you have a failing PR or haven't hooked up Travis CI**)
-  * a link to your deployed Heroku URL (**You will get a 0 if you don't submit this**)
+[![Build Status](https://travis-ci.com/TCW417/16-19-auth-asset-mgt.svg?branch=master)](https://travis-ci.com/TCW417/16-19-auth-asset-mgt)
 
-## Resources
-* [express docs](http://expressjs.com/en/4x/api.html)
-* [mongoose guide](http://mongoosejs.com/docs/guide.html)
-* [mongoose api docs](http://mongoosejs.com/docs/api.html)
+This lab implements a basic authentication API.
 
-### Configuration
-Configure the root of your repository with the following files and directories. Thoughtfully name and organize any additional configuration or module files.
-* **README.md** - contains documentation
-* **.env** - contains env variables **(should be git ignored)**
-* **.gitignore** - contains a [robust](http://gitignore.io) `.gitignore` file
-* **.eslintrc.json** - contains the course linter configuration
-* **.eslintignore** - contains the course linter ignore configuration
-* **package.json** - contains npm package config
-  * create a `test` script for running tests
-  * create `dbon` and `dboff` scripts for managing the mongo daemon
-* **db/** - contains mongodb files **(should be git ignored)**
-* **index.js** - entry-point of the application
-* **src/** - contains the remaining code
-  * **src/lib/** - contains module definitions
-  * **src/model/** - contains module definitions
-  * **src/route/** - contains module definitions
-  * **src/\_\_test\_\_/** - contains test modules
-  * **main.js** - starts the server
+### Routes
 
-## Feature Tasks  
-For this assignment you will be building a RESTful HTTP server with basic authentication using express.
+#### POST /api/signup
 
-#### Account
-Create a user `Account` model that keeps track of a username, email, hashed password, and token seed. The model should be able to regenerate tokens using json web token. 
+This route creates a new user account.  The body of the request must include a username, password and email.
 
-#### Server Endpoints
-* `POST /signup` 
-  * pass data as stringifed JSON in the body of a **POST** request to create a new account
-  * on success respond with a 200 status code and an authentication token
-  * on failure due to a bad request send a 400 status code
+```
+http POST localhost:3000/api/signup username=Larry password=McMurtry email='lonesome@dove.com'
 
-## Tests
-* POST should test for 200, 400, and 409 (if any keys are unique)
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Connection: keep-alive
+Content-Length: 479
+Content-Type: application/json; charset=utf-8
+Date: Mon, 02 Jul 2018 23:51:43 GMT
+ETag: W/"1df-QcYUBHTXhq3c2S6xNl8ELjEnYkY"
+X-Powered-By: Express
 
-## Stretch Goal
-* Create a **very rudimentary** front end using jQuery/vanilla Javascript to make a request to your API to authenticate yourself as a user. You can start by making a signup form that has username/password/email input fields. Upon form submission, send those fields to your server via a front end AJAX request, and send a response back to display to your front end that confirms you successfully signed up. 
-* **This is a heavy stretch goal and should be prioritized last. The instructional team will not assist you with this goal**. 
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiI3ODRlMmViOTFmMDYwNzM3OGM4OTY3YzM1YmU0NDEyYjhiN2NmMzUwOWEyZjJlN2QiLCJpYXQiOjE1MzA2NTYzOTh9.Eq0g-0LulEn5G5JrQ5XRMsREklYV5KuVhEcuq6PREYY"
+}
+```
 
-## Documentation
-Add your Travis badge to the top of your README. List all of your registered routes and describe their behavior. Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it. Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.
+Returns 409 if username and email aren't unique, 400 if request is missing any required information.
+
+#### GET /api/login
+
+This route requires the username and password to be base64 encrypted and included as the request header's Authentication tag. The route returns a JSON Web Token whose payload includes the database ID or the user's profile. This can be used in a subsequent GET /api/profiles request.
+
+```
+http -a Larry:McMurtry localhost:3000/api/login
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblNlZWQiOiIyMGNiZmExODFmZmZhYTk4ZGRkMDEzNDExMTM4NDI2YmUwZGU2NTY0NTBhYTA3ZWIiLCJpYXQiOjE1MzA2NTY2MzZ9.0XAT9ltDxe34pxpVZwKLb17b7n6ZpKj_N04wVwviTLg"
+}
+```
+
+Returns 400 if username not found, 500 if password is incorrect (as a benefit to hackers everywhere).
+
+#### POST /api/profiles
+
+Create a profile for an existing Account.  Requires a firstName and Account ID (provided by the GET /api/login route). Other properties are lastName, location, profileImageUrl, and bio.  Returns status code 200 on success.
+```
+request body = {
+    firstName: 'Larry',
+    lastName: 'McMurtry',
+    location: 'Souix Falls, SD',
+    bio: 'A great american author.',
+    accountId: '5b3bf68e06fde67494fa7ab0'
+}
+```
+Returns
+```
+{
+    "_id": "5b3bf93461e2a6754b1c8cf3",
+    "firstName": "Larry",
+    "lastName": "McMurtry",
+    "location": "Souix Falls, SD",
+    "bio": "A great american author.",
+    "accountId": "5b3bf68e06fde67494fa7ab0",
+    "__v": 0
+}
+```
+Returns 404 if accountId does not exist, 400 if badly formed request.
+
+#### GET /api/profiles[?id=accountId]
+
+With no query string, returns an array of all profiles:
+```
+[
+    {
+        "_id": "5b3bf93461e2a6754b1c8cf3",
+        "firstName": "Larry",
+        "lastName": "McMurtry",
+        "location": "Souix Falls, SD",
+        "bio": "A great american author.",
+        "accountId": "5b3bf68e06fde67494fa7ab0",
+        "__v": 0
+    }
+]
+```
+With an id query (id is the profile _id property, not the accountId property), returns the specific profile:
+```
+{
+    "_id": "5b3bf93461e2a6754b1c8cf3",
+    "firstName": "Larry",
+    "lastName": "McMurtry",
+    "location": "Souix Falls, SD",
+    "bio": "A great american author.",
+    "accountId": "5b3bf68e06fde67494fa7ab0",
+    "__v": 0
+}
+```
+Returns 404 if profile isn't found, 401 on bad token, 400 if query is badly formed.
+
+
 
 
