@@ -4,7 +4,7 @@ import superagent from 'superagent';
 import { startServer, stopServer } from '../lib/server';
 import { createSoundMockPromise, removeSoundsAndAccounts } from './lib/sound-mock';
 
-const dogMp3 = `${__dirname}/asset/dog.mp3`;
+const dogMp3 = `${__dirname}/asset/emuexport.jpg`;
 const apiUrl = `http://localhost:${process.env.PORT}/api/sounds`;
 
 describe('TESTING ROUTES AT /api/sounds', () => {
