@@ -32,8 +32,6 @@
               "username": "noahmvf",
               "email": "noahmvf@gmail.com",
               "password": "apsjfoasjfoi",
-              "firstName": "Noah",
-              "lastName": "Alexander"
             },
             "capture": {
               "json": "$.token",
@@ -43,14 +41,14 @@
         }
         ,{
           "post": {
-            "url": "/api/items",
+            "url": "/api/beer",
             "headers": {
               "Authorization": "Bearer {{ token }}"
             },
             "json": {
-              "postType": "Lost",
-              "itemType": "Watch",
-              "color": "Gold"
+              "title": "Emu Export",
+              "url": "randomUrl",
+              "accountId": "randomString"
             }
           }
         }
