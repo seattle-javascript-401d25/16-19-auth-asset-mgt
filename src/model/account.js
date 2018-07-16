@@ -43,7 +43,7 @@ accountSchema.methods.verifyPasswordPromise = function verifyPasswordPromise(pas
 accountSchema.methods.createTokenPromise = function createTokenPromise() {
   return this.save()
     .then((updatedAccount) => {
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET_KEY);
     })
     .catch((err) => {
       throw new HttpErrors(500, `ERROR SAVING ACCOUNT or ERROR WITH JWT: ${JSON.stringify(err)}`);
