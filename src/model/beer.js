@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 
-const soundSchema = mongoose.Schema({
+const beerSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -24,4 +24,4 @@ const soundSchema = mongoose.Schema({
 
 
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('sounds', soundSchema, 'sounds', skipInit);
+export default mongoose.model('beers', beerSchema, 'beers', skipInit);

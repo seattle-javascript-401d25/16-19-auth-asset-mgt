@@ -1,33 +1,33 @@
 import 'babel-polyfill';
 import faker from 'faker';
 import { createAccountMockPromise, removeAccountMockPromise } from './account-mock'; /*eslint-disable-line*/
-import Sound from '../../model/sound';
+import Beer from '../../model/beer';
 import Account from '../../model/account';
 
-const createSoundMockPromise = async () => {
+const createBeerMockPromise = async () => {
   const mockData = {};
   
   const mockAcctResponse = await createAccountMockPromise();
  
   mockData.account = mockAcctResponse.account;
   mockData.token = mockAcctResponse.token;
-  const sound = await new Sound({
+  const beer = await new Beer({
     title: faker.lorem.words(2),
     url: faker.random.image(),
     fileName: faker.system.fileName(),
     accountId: mockData.account._id,
   }).save();
   
-  mockData.sound = sound;
+  mockData.beer = beer;
   return mockData;
 };
 
-const removeSoundsAndAccounts = () => {
+const removeBeersAndAccounts = () => {
   return Promise.all([
-    Sound.remove({}),
+    Beer.remove({}),
     Account.remove({}),
   ]);
 };
 
 
-export { createSoundMockPromise, removeSoundsAndAccounts };
+export { createBeerMockPromise, removeBeersAndAccounts };

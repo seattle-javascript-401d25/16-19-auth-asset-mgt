@@ -12,7 +12,7 @@ import loggerMiddleware from '../lib/middleware/logger-middleware';
 // our routes
 import authRouter from '../router/auth-router';
 import profileRouter from '../router/profile-router';
-import soundRouter from '../router/sound-router';
+import beerRouter from '../router/beer-router';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(loggerMiddleware);
 app.use(authRouter);
 app.use(profileRouter);
-app.use(soundRouter);
+app.use(beerRouter);
 // catch all
 app.use(errorMiddleWare);
 app.all('*', (request, response) => {
