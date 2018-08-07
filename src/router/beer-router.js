@@ -26,6 +26,13 @@ beerRouter.post('/api/beer', bearerAuthMiddleware, multerUpload.any(), (request,
     .then((url) => {
       logger.log(logger.INFO, `beer ROUTER POST: received a valid URL from Amazon S3: ${url}`);
 
+      // what do I do about accountId??
+      /*
+      SQL equivalent:
+      INSERT INTO BEER (title, fileName, url, accountId)
+      VALUES (title, fileName, url, accountId) 
+    */
+
       return new Beer({
         title: request.body.title,
         accountId: request.account._id,
@@ -43,6 +50,14 @@ beerRouter.post('/api/beer', bearerAuthMiddleware, multerUpload.any(), (request,
 beerRouter.get('/api/beer/:id?', bearerAuthMiddleware, (request, response, next) => {
   if (!request.account) return next(new HttpErrors(401), 'beer ROUTER GET: invalid request');
   if (!request.params.id) return next(new HttpErrors(400, 'beer ROUTER GET: no id provided'));
+
+
+  /*
+     SQL equivalent:
+    SELECT TOP 1 * FROM BEER WHERE id = accountId
+  )
+  */
+
 
   return Beer.findById(request.params.id)
     .then((beer) => {

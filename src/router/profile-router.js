@@ -35,6 +35,12 @@ profileRouter.get('/api/profiles/:id?', bearerAuthMiddleware, (request, response
       .catch(next);
   }
 
+  /*
+  SQL equivalent:
+  SELECT TOP 1 * FROM PROFILES WHERE id = accountId
+  )
+  */
+
   Profile.findOne({ _id: request.params.id })
     .then((profile) => {
       if (!profile) return next(new HttpErrors(400, 'PROFILE ROUTER GET: profile not found'));

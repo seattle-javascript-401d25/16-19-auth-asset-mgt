@@ -10,6 +10,13 @@ authRouter.post('/api/signup', (request, response, next) => {
   if (!request.body.username || !request.body.email || !request.body.password) {
     return next(new HttpErrors(400, 'AUTH-ROUTER: INVALID SIGNUP'));
   }
+
+  /*
+  SQL equivalent:
+  INSERT INTO ACCOUNT (username, email, password)
+  VALUES ('username', 'email', 'password');
+  */
+
   return Account.create(request.body.username, request.body.email, request.body.password)
     .then((account) => {
       delete request.body.password;

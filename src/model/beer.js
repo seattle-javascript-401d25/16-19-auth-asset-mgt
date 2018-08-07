@@ -2,6 +2,16 @@
 
 import mongoose from 'mongoose';
 
+/*
+  SQL equivalent:
+  CREATE TABLE BEER (
+    title VARCHAR,
+    url VARCHAR,
+    fileName VARCHAR,
+    accountId VARCHAR,
+  )
+*/
+
 const beerSchema = mongoose.Schema({
   title: {
     type: String,

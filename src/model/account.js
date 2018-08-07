@@ -11,6 +11,15 @@ import HttpErrors from 'http-errors';
 const HASH_ROUNDS = 1;
 const TOKEN_SEED_LENGTH = 50;
 
+/*
+  SQL equivalent:
+  CREATE TABLE ACCOUNTS (
+    username VARCHAR,
+    password VARCHAR,
+    email VARCHAR,
+    tokenSeed VARCHAR,
+  )
+*/
 const accountSchema = mongoose.Schema({
   passwordHash: {
     type: String,
@@ -60,6 +69,13 @@ accountSchema.methods.createTokenPromise = function createTokenPromise() {
 const skipInit = process.env.NODE_ENV === 'development';
 
 const Account = mongoose.model('accounts', accountSchema, 'accounts', skipInit);
+
+/*
+  SQL equivalent:
+  INSERT INTO ACCOUNTS (username, email, password) (
+    VALUES ('username', 'email', 'password');
+  )
+*/
 
 Account.create = (username, email, password) => {
   if (!username || !password) {

@@ -1,5 +1,15 @@
 import mongoose from 'mongoose';
 
+/*
+  SQL equivalent:
+  CREATE TABLE PROFILES (
+    firstName VARCHAR,
+    lastName VARCHAR,
+    bio VARCHAR,
+    profileImageUrl VARCHAR,
+  )
+*/
+
 const profileSchema = mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
