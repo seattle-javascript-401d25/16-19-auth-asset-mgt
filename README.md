@@ -1,63 +1,44 @@
-![cf](https://i.imgur.com/7v5ASc8.png) Lab 16: Basic Authentication
-======
+https://travis-ci.org/noahmvf/16-19-auth-asset-mgt
 
-## Submission Instructions
-* Work in a fork of this repository
-* Work in a branch on your fork called `lab-<current lab number>`
-* Set up Travis on your forked repo
-* **Deploy to Heroku**
-* Open a pull request to this repository
-* Submit on canvas 
-  * a question and observation
-  * your original estimate
-  * how long you spent, 
-  * a link to your pull request (**You will get a 0 if you have a failing PR or haven't hooked up Travis CI**)
-  * a link to your deployed Heroku URL (**You will get a 0 if you don't submit this**)
+`Auth-Routes` 
 
-## Resources
-* [express docs](http://expressjs.com/en/4x/api.html)
-* [mongoose guide](http://mongoosejs.com/docs/guide.html)
-* [mongoose api docs](http://mongoosejs.com/docs/api.html)
+`POST ROUTE`
+Our Post route takes the arguments (response, request, and next) and creates a new Account schema with the properties: passwordhash, username, email, and tokenseed. If any of these properties is missing from the post we'll receive an error. 
 
-### Configuration
-Configure the root of your repository with the following files and directories. Thoughtfully name and organize any additional configuration or module files.
-* **README.md** - contains documentation
-* **.env** - contains env variables **(should be git ignored)**
-* **.gitignore** - contains a [robust](http://gitignore.io) `.gitignore` file
-* **.eslintrc.json** - contains the course linter configuration
-* **.eslintignore** - contains the course linter ignore configuration
-* **package.json** - contains npm package config
-  * create a `test` script for running tests
-  * create `dbon` and `dboff` scripts for managing the mongo daemon
-* **db/** - contains mongodb files **(should be git ignored)**
-* **index.js** - entry-point of the application
-* **src/** - contains the remaining code
-  * **src/lib/** - contains module definitions
-  * **src/model/** - contains module definitions
-  * **src/route/** - contains module definitions
-  * **src/\_\_test\_\_/** - contains test modules
-  * **main.js** - starts the server
+On success, when we return our created account, we delete the password from the body of our Schema for security purposes. We then create a new promise for our token which will log success when a token is returned in JSON format to our database. If unsuccessful, our catch will move us to the next operation.
 
-## Feature Tasks  
-For this assignment you will be building a RESTful HTTP server with basic authentication using express.
+`GET ROUTE`
+Our GET route takes the arguments (response, request, and next) and requests an account based on its token. On success, we receive a 200 status code, and create a new token promise which returns a token response in JSON format.
 
-#### Account
-Create a user `Account` model that keeps track of a username, email, hashed password, and token seed. The model should be able to regenerate tokens using json web token. 
 
-#### Server Endpoints
-* `POST /signup` 
-  * pass data as stringifed JSON in the body of a **POST** request to create a new account
-  * on success respond with a 200 status code and an authentication token
-  * on failure due to a bad request send a 400 status code
+`Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it.`
+Our resource is an account Schema, which has the properties: passwordhash, username, email, and tokenseed.
 
-## Tests
-* POST should test for 200, 400, and 409 (if any keys are unique)
+`Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.`
+A developer should be able to make requests to create new accounts as well as fetch accounts with the POST and GET routes. 
 
-## Stretch Goal
-* Create a **very rudimentary** front end using jQuery/vanilla Javascript to make a request to your API to authenticate yourself as a user. You can start by making a signup form that has username/password/email input fields. Upon form submission, send those fields to your server via a front end AJAX request, and send a response back to display to your front end that confirms you successfully signed up. 
-* **This is a heavy stretch goal and should be prioritized last. The instructional team will not assist you with this goal**. 
+`get('/api/login'`
+{
+    "passwordHash":
+    "username": 
+    "email": 
+    "tokenSeed":
+}
 
-## Documentation
-Add your Travis badge to the top of your README. List all of your registered routes and describe their behavior. Describe what your resouce is. Imagine you are providing this API to other developers who need to research your API in order to use it. Describe how a developer should be able to make requests to your API. Refer to the PokeAPI docs for a good example to follow.
+`post('/api/login')`
+{
+    "passwordHash":
+    "username": 
+    "email": 
+    "tokenSeed":
+}
 
+`Profile Routes`
+Creating a profile
+- To create a profile, make a POST to the api/profiles url
+- Enter firstName, lastName, bio, and an option profileImgUrl 
+
+Getting a profile
+- To get a profile, make a GET call to the api/profiles url with a specified api/profiles/[profile._id]
+- set token field to token retrieved
 
